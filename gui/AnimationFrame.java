@@ -14,7 +14,7 @@ public class AnimationFrame extends JFrame {
 
 	final public static int FRAMES_PER_SECOND = 60;
 	final public static int SCREEN_HEIGHT = 600;
-	final public static int SCREEN_WIDTH = 800;
+	final public static int SCREEN_WIDTH = 600;
 
 	private int screenCenterX = SCREEN_WIDTH / 2;
 	private int screenCenterY = SCREEN_HEIGHT / 2;
@@ -129,7 +129,7 @@ public class AnimationFrame extends JFrame {
 			public void mouseClicked(MouseEvent arg0) {
 				btnBoard_mouseClicked(arg0, 1, currentTurn);
 			}
-
+			
 		});
 		
 		btnTopM = new JButton(" ");
@@ -196,16 +196,16 @@ public class AnimationFrame extends JFrame {
 			}
 
 		});
-				
-		setButtons(btnTopL, 250, 150, 100, 100);
-		setButtons(btnTopM, 350, 150, 100, 100);
-		setButtons(btnTopR, 450, 150, 100, 100);
-		setButtons(btnMidL, 250, 250, 100, 100);
-		setButtons(btnMidM, 350, 250, 100, 100);
-		setButtons(btnMidR, 450, 250, 100, 100);
-		setButtons(btnBotL, 250, 350, 100, 100);
-		setButtons(btnBotM, 350, 350, 100, 100);
-		setButtons(btnBotR, 450, 350, 100, 100);
+		
+		setButtons(btnTopL, 150, 150, 100, 100);
+		setButtons(btnTopM, 250, 150, 100, 100);
+		setButtons(btnTopR, 350, 150, 100, 100);
+		setButtons(btnMidL, 150, 250, 100, 100);
+		setButtons(btnMidM, 250, 250, 100, 100);
+		setButtons(btnMidR, 350, 250, 100, 100);
+		setButtons(btnBotL, 150, 350, 100, 100);
+		setButtons(btnBotM, 250, 350, 100, 100);
+		setButtons(btnBotR, 350, 350, 100, 100);
 		
 
 		btnPauseRun.setFont(new Font("Tahoma", Font.BOLD, 12)); //repeat for each button
@@ -230,6 +230,7 @@ public class AnimationFrame extends JFrame {
 		getContentPane().setComponentZOrder(lblBottom, 0);
 
 	}
+
 
 	private void setButtons(JButton button, int x, int y, int width, int height) {
 		button.setFont(new Font("Tahoma", Font.BOLD, 12));
