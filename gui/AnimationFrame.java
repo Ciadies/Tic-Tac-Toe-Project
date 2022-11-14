@@ -28,6 +28,27 @@ public class AnimationFrame extends JFrame {
 	private JButton btnPauseRun;
 	private JLabel lblTop;
 	private JLabel lblBottom;
+	
+	private JButton btnTopL;
+	private JButton btnTopM;
+	private JButton btnTopR;
+	private JButton btnMidL;
+	private JButton btnMidM;
+	private JButton btnMidR;
+	private JButton btnBotL;
+	private JButton btnBotM;
+	private JButton btnBotR;
+	
+	public static int currentTurn = 1; //1 = X, 2 = O
+	private boolean topLOccupied = false;
+	private boolean topMOccupied = false;
+	private boolean topROccupied = false;
+	private boolean midLOccupied = false;
+	private boolean midMOccupied = false;
+	private boolean midROccupied = false;
+	private boolean botLOccupied = false;
+	private boolean botMOccupied = false;
+	private boolean botROccupied = false;
 
 	private static boolean stop = false;
 
@@ -50,6 +71,7 @@ public class AnimationFrame extends JFrame {
 	private Background background = null;
 	boolean centreOnPlayer = false;
 	int universeLevel = 0;
+	
 	
 	public AnimationFrame(Animation animation)
 	{
@@ -93,15 +115,100 @@ public class AnimationFrame extends JFrame {
 		panel.setSize(SCREEN_WIDTH, SCREEN_HEIGHT);
 		getContentPane().add(panel, BorderLayout.CENTER);
 
-		btnPauseRun = new JButton("||");
+		btnPauseRun = new JButton("||"); 							//Example code of how a button works
 		btnPauseRun.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
 				btnPauseRun_mouseClicked(arg0);
 			}
 		});
+		
+		btnTopL = new JButton(" ");
+		btnTopL.addMouseListener(new MouseAdapter() {  //repeat for each button
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				btnBoard_mouseClicked(arg0, 1, currentTurn);
+			}
 
-		btnPauseRun.setFont(new Font("Tahoma", Font.BOLD, 12));
+		});
+		
+		btnTopM = new JButton(" ");
+		btnTopM.addMouseListener(new MouseAdapter() {  //repeat for each button
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				btnBoard_mouseClicked(arg0, 2, currentTurn);
+			}
+
+		});
+		btnTopR = new JButton(" ");
+		btnTopR.addMouseListener(new MouseAdapter() {  //repeat for each button
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				btnBoard_mouseClicked(arg0, 3, currentTurn);
+			}
+
+		});
+		btnMidL = new JButton(" ");
+		btnMidL.addMouseListener(new MouseAdapter() {  //repeat for each button
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				btnBoard_mouseClicked(arg0, 4, currentTurn);
+			}
+
+		});
+		btnMidM = new JButton(" ");
+		btnMidM.addMouseListener(new MouseAdapter() {  //repeat for each button
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				btnBoard_mouseClicked(arg0, 5, currentTurn);
+			}
+
+		});
+		btnMidR = new JButton(" ");
+		btnMidR.addMouseListener(new MouseAdapter() {  //repeat for each button
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				btnBoard_mouseClicked(arg0, 6, currentTurn);
+			}
+
+		});
+		btnBotL= new JButton(" ");
+		btnBotL.addMouseListener(new MouseAdapter() {  //repeat for each button
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				btnBoard_mouseClicked(arg0, 7, currentTurn);
+			}
+
+		});
+		btnBotM = new JButton(" ");
+		btnBotM.addMouseListener(new MouseAdapter() {  //repeat for each button
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				btnBoard_mouseClicked(arg0, 8, currentTurn);
+			}
+
+		});
+		btnBotR = new JButton(" ");
+		btnBotR.addMouseListener(new MouseAdapter() {  //repeat for each button
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				btnBoard_mouseClicked(arg0, 9, currentTurn);
+			}
+
+		});
+				
+		setButtons(btnTopL, 250, 150, 100, 100);
+		setButtons(btnTopM, 350, 150, 100, 100);
+		setButtons(btnTopR, 450, 150, 100, 100);
+		setButtons(btnMidL, 250, 250, 100, 100);
+		setButtons(btnMidM, 350, 250, 100, 100);
+		setButtons(btnMidR, 450, 250, 100, 100);
+		setButtons(btnBotL, 250, 350, 100, 100);
+		setButtons(btnBotM, 350, 350, 100, 100);
+		setButtons(btnBotR, 450, 350, 100, 100);
+		
+
+		btnPauseRun.setFont(new Font("Tahoma", Font.BOLD, 12)); //repeat for each button
 		btnPauseRun.setBounds(SCREEN_WIDTH - 64, 20, 48, 32);
 		btnPauseRun.setFocusable(false);
 		getContentPane().add(btnPauseRun);
@@ -122,6 +229,14 @@ public class AnimationFrame extends JFrame {
 		getContentPane().add(lblBottom);
 		getContentPane().setComponentZOrder(lblBottom, 0);
 
+	}
+
+	private void setButtons(JButton button, int x, int y, int width, int height) {
+		button.setFont(new Font("Tahoma", Font.BOLD, 12));
+		button.setBounds(x, y, width, height);
+		button.setFocusable(false);
+		getContentPane().add(button);
+		getContentPane().setComponentZOrder(button, 0);
 	}
 
 	public void start()
@@ -232,6 +347,49 @@ public class AnimationFrame extends JFrame {
 			isPaused = true;
 			this.btnPauseRun.setText(">");
 		}
+	}
+	
+	private void btnBoard_mouseClicked(MouseEvent arg0, int position, int currentTurn) {
+		String text = ""; //Temp display method
+		if (currentTurn == 1) {
+			text = "X";
+		} else if (currentTurn == 2) {
+			text = "O";
+		}
+		if (position == 1 && topLOccupied != true) {
+			this.btnTopL.setText(text);
+			topLOccupied = true;
+		} else if (position == 2 && topMOccupied != true) {
+			this.btnTopM.setText(text);
+			topMOccupied = true;
+		} else if (position == 3 && topROccupied != true) {
+			this.btnTopR.setText(text);
+			topROccupied = true;
+		} else if (position == 4 && midLOccupied != true) {
+			this.btnMidL.setText(text);
+			midLOccupied = true;
+		} else if (position == 5 && midMOccupied != true) {
+			this.btnMidM.setText(text);
+			midMOccupied = true;
+		} else if (position == 6 && midROccupied != true) {
+			this.btnMidR.setText(text);
+			midROccupied = true;
+		} else if (position == 7 && botLOccupied != true) {
+			this.btnBotL.setText(text);
+			botLOccupied = true;
+		} else if (position == 8 && botMOccupied != true) {
+			this.btnBotM.setText(text);
+			botMOccupied = true;
+		} else if (position == 9 && botROccupied != true) {
+			this.btnBotR.setText(text);
+			botROccupied = true;
+		} 
+		if (currentTurn == 1) {
+			this.currentTurn = 2;
+		} else {
+			this.currentTurn = 1;
+		}
+		
 	}
 
 	private void handleKeyboardInput() {
