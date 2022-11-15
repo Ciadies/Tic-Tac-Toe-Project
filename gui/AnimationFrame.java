@@ -50,6 +50,9 @@ public class AnimationFrame extends JFrame {
 	private boolean botMOccupied = false;
 	private boolean botROccupied = false;
 
+	private String board[] = new String[9];
+	private boolean win = false;
+	
 	private static boolean stop = false;
 
 	private long current_time = 0;								//MILLISECONDS
@@ -207,13 +210,13 @@ public class AnimationFrame extends JFrame {
 		setButtons(btnBotM, 250, 350, 100, 100);
 		setButtons(btnBotR, 350, 350, 100, 100);
 		
-
+/*
 		btnPauseRun.setFont(new Font("Tahoma", Font.BOLD, 12)); //repeat for each button
 		btnPauseRun.setBounds(SCREEN_WIDTH - 64, 20, 48, 32);
 		btnPauseRun.setFocusable(false);
 		getContentPane().add(btnPauseRun);
 		getContentPane().setComponentZOrder(btnPauseRun, 0);
-
+*/
 		lblTop = new JLabel("Time: ");
 		lblTop.setForeground(Color.WHITE);
 		lblTop.setFont(new Font("Consolas", Font.BOLD, 20));
@@ -321,8 +324,15 @@ public class AnimationFrame extends JFrame {
 	}
 
 	private void updateControls() {
+		String tile = null;
+		if (currentTurn == 1) {
+			tile = "X";
+		} else {
+			tile = "O";
+		}
 		
-		this.lblTop.setText(String.format("Time: %9.3f;  centerX: %5d; centerY: %5d;  scale: %3.3f", elapsed_time / 1000.0, screenCenterX, screenCenterY, scale));
+		this.lblTop.setText("Current Turn: " + tile);
+	//	this.lblTop.setText(String.format("Time: %9.3f;  centerX: %5d; centerY: %5d;  scale: %3.3f", elapsed_time / 1000.0, screenCenterX, screenCenterY, scale));
 		this.lblBottom.setText(Integer.toString(universeLevel));
 		if (universe != null) {
 			this.lblBottom.setText(universe.toString());
@@ -360,37 +370,96 @@ public class AnimationFrame extends JFrame {
 		if (position == 1 && topLOccupied != true) {
 			this.btnTopL.setText(text);
 			topLOccupied = true;
+			changeTurn(currentTurn);
+			board[0] = text;
 		} else if (position == 2 && topMOccupied != true) {
 			this.btnTopM.setText(text);
 			topMOccupied = true;
+			changeTurn(currentTurn);
+			board[1] = text;
 		} else if (position == 3 && topROccupied != true) {
 			this.btnTopR.setText(text);
 			topROccupied = true;
+			changeTurn(currentTurn);
+			board[2] = text;
 		} else if (position == 4 && midLOccupied != true) {
 			this.btnMidL.setText(text);
 			midLOccupied = true;
+			changeTurn(currentTurn);
+			board[3] = text;
 		} else if (position == 5 && midMOccupied != true) {
 			this.btnMidM.setText(text);
 			midMOccupied = true;
+			changeTurn(currentTurn);
+			board[4] = text;
 		} else if (position == 6 && midROccupied != true) {
 			this.btnMidR.setText(text);
 			midROccupied = true;
+			changeTurn(currentTurn);
+			board[5] = text;
 		} else if (position == 7 && botLOccupied != true) {
 			this.btnBotL.setText(text);
 			botLOccupied = true;
+			changeTurn(currentTurn);
+			board[6] = text;
 		} else if (position == 8 && botMOccupied != true) {
 			this.btnBotM.setText(text);
 			botMOccupied = true;
+			changeTurn(currentTurn);
+			board[7] = text;
 		} else if (position == 9 && botROccupied != true) {
 			this.btnBotR.setText(text);
 			botROccupied = true;
+			changeTurn(currentTurn);
+			board[8] = text;
 		} 
+		if (getIsVictorious(currentTurn) == true) {
+			stop = true;
+		}
+		
+	}
+	
+	private boolean getIsVictorious(int currentTurn) {
+		String tile = null;
+		if (currentTurn == 1) {
+			tile = "X";
+		} else {
+			tile = "O";
+		}
+		for (int i = 0; i <= 2; i++) {
+			if (board[i] == tile && board[i+3] == tile && board[i+6] == tile) {
+				System.out.println("Victory for " + tile);
+				 return true; //win
+			}
+		}
+		for (int i = 0; i <= 7; i+=3) {
+			if (board[i] == tile && board[i+1] == tile && board[i+2] == tile) {
+				System.out.println("Victory for " + tile);
+				return true; // win
+			}
+		}
+		if (board[0] == tile && board[4] == tile && board[8] == tile) {
+			System.out.println("Victory for " + tile);
+			return true; // win
+		}
+		if (board[2] == tile && board[4] == tile && board[6] == tile) {
+			System.out.println("Victory for " + tile);
+			return true; //win
+		}
+		if (board[0] != null && board[1] != null && board[2] != null && board[3] != null && board[4] != null && 
+				board[5] != null && board[6] != null && board[7] != null && board[8] != null) {
+			System.out.println("Draw");
+			stop = true; //tie
+		}
+		return false; //no state
+	}
+	
+	private void changeTurn(int currentTurn) {
 		if (currentTurn == 1) {
 			this.currentTurn = 2;
 		} else {
 			this.currentTurn = 1;
 		}
-		
 	}
 
 	private void handleKeyboardInput() {

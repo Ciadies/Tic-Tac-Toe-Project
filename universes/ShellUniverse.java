@@ -8,12 +8,12 @@ public class ShellUniverse implements Universe {
 	private ArrayList<Background> backgrounds = new ArrayList<Background>();
 
 	public ShellUniverse () {
-
+/*
 		this.setXCenter(0);
 		this.setYCenter(0);
 		player1 = new SimpleSprite(0,0);
 		sprites.add(player1);
-			
+	*/		
 	}
 
 	public double getScale() {
@@ -73,7 +73,7 @@ public class ShellUniverse implements Universe {
 	}
 
 	public String toString() {
-		return "ShellUniverse";
+		return "";
 	}
 
 }
