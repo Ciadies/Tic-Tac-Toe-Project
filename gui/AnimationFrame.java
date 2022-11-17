@@ -236,7 +236,7 @@ public class AnimationFrame extends JFrame {
 
 
 	private void setButtons(JButton button, int x, int y, int width, int height) {
-		button.setFont(new Font("Tahoma", Font.BOLD, 12));
+		button.setFont(new Font("Tahoma", Font.BOLD, 48)); //Tahoma, Brush Script MT, Papyrus, 
 		button.setBounds(x, y, width, height);
 		button.setFocusable(false);
 		getContentPane().add(button);
