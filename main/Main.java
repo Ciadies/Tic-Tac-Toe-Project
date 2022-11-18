@@ -7,7 +7,6 @@ public class Main {
 		AnimationFrame frame = new AnimationFrame((Animation)animation);
 		frame.start();
 		MiniMax minimax = new MiniMax();
-		minimax.listAllPossibleMoves();
 	}
 
 }

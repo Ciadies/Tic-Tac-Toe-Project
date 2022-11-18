@@ -4,23 +4,41 @@ public class MiniMax {
 	private String board[] = new String[9];
 	Node head = null;
 	
-	public void listAllPossibleMoves() {
-		add(1);
-		add(2);
-		add(3);
-		add(4);
-		add(5);
-		add(6);
-		add(7);
-		add(8);
-		add(9);
+	public void listAllPossibleMoves(String[] board) {
+		clear();
+		if (board[0] == null) {
+			add(1);
+		} if (board[1] == null) {
+			add(2);
+		} if (board[2] == null) {
+			add(3);
+		} if (board[3] == null) {
+			add(4);
+		} if (board[4] == null) {
+			add(5);
+		} if (board[5] == null) {
+			add(6);
+		} if (board[6] == null) {
+			add(7);
+		} if (board[7] == null) {
+			add(8);
+		} if (board[8] == null) {
+			add(9);
+		} 
+		
 	}
 	
-	public int minimax(boolean isMaximizingPlayer, String board[]) { //Currently set up only to work while X is cpu
-		int value = 0;
-		for (int i = 0; i <= size(); i++) { //goes through each possible move
+	public int minimax(boolean isMaximizingPlayer, String[] board) { //Currently set up only to work while X is cpu
+		int f = 0; 
+		clear();
+		listAllPossibleMoves(board);
+		if (size() <= 0) {
+			return 0;
+		}
+		for (int i = get(f); i <= size(); i++) { //goes through each possible move
 			String[] boardClone = (String[]) board.clone();
 			boardClone[i] = "X";
+			f++;
 			if (isMaximizingPlayer == true) {
 				if (getIsVictorious(1, boardClone) == true) {
 					return 1;
@@ -35,7 +53,17 @@ public class MiniMax {
 				}
 			}
 		}
-		return value;
+		return 0;
+	}
+	
+	public void addToBoard(int index, int currentTurn) {
+		String tile = null;
+		if (currentTurn == 1) {
+			tile = "X";
+		} else {
+			tile = "O";
+		}
+		board[index] = tile;
 	}
 	
 	private boolean getIsVictorious(int currentTurn, String board[]) {
@@ -66,7 +94,6 @@ public class MiniMax {
 		}
 		return false; //no state
 	}
-
 
 	public int size() {
 		Node currNode = head;
@@ -116,7 +143,7 @@ public class MiniMax {
 
 	}
 
-	public Object get(int index) {
+	public int get(int index) {
 
 		Node currNode = head;
 		int iteration = 0;
