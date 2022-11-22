@@ -28,34 +28,40 @@ public class MiniMax {
 		
 	}
 	
-	public int minimax(boolean isMaximizingPlayer, String[] board) { //Currently set up only to work while X is cpu
-		int f = 0; 
+	public int findBestMove(boolean isMaximizingPlayer, String[] board) {
+		int f = 0;
 		clear();
 		listAllPossibleMoves(board);
-		if (size() <= 0) {
+		int bestMove = -1;
+		int value = 0;
+		if (size() == 0) {
 			return 0;
 		}
-		for (int i = get(f); i <= size(); i++) { //goes through each possible move
+		
+		for (int i = get(f); f < size(); f++) {
 			String[] boardClone = (String[]) board.clone();
 			boardClone[i] = "X";
-			f++;
 			if (isMaximizingPlayer == true) {
-				if (getIsVictorious(1, boardClone) == true) {
-					return 1;
+				if(getIsVictorious(1, board) == true) {
+					value = i;
 				} else {
-					return minimax(false, boardClone);
+					value = findBestMove(false, boardClone);
 				}
-			} else {
-				if (getIsVictorious(2, boardClone) == true) {
-					return -1;
+			} else if (isMaximizingPlayer == false) {
+				if(getIsVictorious(2, board) == true) {
+					value = -1;
 				} else {
-					return minimax(true, boardClone);
+					value = findBestMove(true, boardClone);
 				}
 			}
+			if (bestMove < value) {
+				bestMove = value;
+			}
 		}
-		return 0;
+		return bestMove;
 	}
-	
+
+//not sure if this method is better or worse
 	public void addToBoard(int index, int currentTurn) {
 		String tile = null;
 		if (currentTurn == 1) {
@@ -156,7 +162,7 @@ public class MiniMax {
 			currNode = currNode.next;
 
 		}
-		return index;
+		return -1;
 
 
 	}
