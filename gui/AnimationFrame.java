@@ -13,8 +13,8 @@ import java.awt.event.MouseMotionAdapter;
 public class AnimationFrame extends JFrame {
 
 	final public static int FRAMES_PER_SECOND = 60;
-	final public static int SCREEN_HEIGHT = 600;
-	final public static int SCREEN_WIDTH = 600;
+	final public static int SCREEN_HEIGHT = 400;
+	final public static int SCREEN_WIDTH = 400;
 
 	private int screenCenterX = SCREEN_WIDTH / 2;
 	private int screenCenterY = SCREEN_HEIGHT / 2;
@@ -38,6 +38,9 @@ public class AnimationFrame extends JFrame {
 	private JButton btnBotL;
 	private JButton btnBotM;
 	private JButton btnBotR;
+	
+	MiniMax minimax = new MiniMax();
+	boolean decisionMade = false;
 	
 	public static int currentTurn = 1; //1 = X, 2 = O
 	private boolean topLOccupied = false;
@@ -200,15 +203,15 @@ public class AnimationFrame extends JFrame {
 
 		});
 		
-		setButtons(btnTopL, 150, 150, 100, 100);
-		setButtons(btnTopM, 250, 150, 100, 100);
-		setButtons(btnTopR, 350, 150, 100, 100);
-		setButtons(btnMidL, 150, 250, 100, 100);
-		setButtons(btnMidM, 250, 250, 100, 100);
-		setButtons(btnMidR, 350, 250, 100, 100);
-		setButtons(btnBotL, 150, 350, 100, 100);
-		setButtons(btnBotM, 250, 350, 100, 100);
-		setButtons(btnBotR, 350, 350, 100, 100);
+		setButtons(btnTopL, 50, 50, 100, 100);
+		setButtons(btnTopM, 150, 50, 100, 100);
+		setButtons(btnTopR, 250, 50, 100, 100);
+		setButtons(btnMidL, 50, 150, 100, 100);
+		setButtons(btnMidM, 150, 150, 100, 100);
+		setButtons(btnMidR, 250, 150, 100, 100);
+		setButtons(btnBotL, 50, 250, 100, 100);
+		setButtons(btnBotM, 150, 250, 100, 100);
+		setButtons(btnBotR, 250, 250, 100, 100);
 		
 /*
 		btnPauseRun.setFont(new Font("Tahoma", Font.BOLD, 12)); //repeat for each button
@@ -220,7 +223,7 @@ public class AnimationFrame extends JFrame {
 		lblTop = new JLabel("Time: ");
 		lblTop.setForeground(Color.WHITE);
 		lblTop.setFont(new Font("Consolas", Font.BOLD, 20));
-		lblTop.setBounds(16, 22, SCREEN_WIDTH - 16, 30);
+		lblTop.setBounds(115, 22, SCREEN_WIDTH - 16, 30);
 		getContentPane().add(lblTop);
 		getContentPane().setComponentZOrder(lblTop, 0);
 
@@ -258,11 +261,12 @@ public class AnimationFrame extends JFrame {
 		System.out.println("main() complete");
 
 	}	
+	
 	private void animationLoop() {
 
 		universe = animation.getNextUniverse();
 		universeLevel++;
-
+		
 		while (stop == false && universe != null) {
 
 			sprites = universe.getSprites();
@@ -279,7 +283,7 @@ public class AnimationFrame extends JFrame {
 				//adapted from http://www.java-gaming.org/index.php?topic=24220.0
 				last_refresh_time = System.currentTimeMillis();
 				next_refresh_time = current_time + minimum_delta_time;
-
+				
 				//sleep until the next refresh time
 				while (current_time < next_refresh_time)
 				{
@@ -310,6 +314,13 @@ public class AnimationFrame extends JFrame {
 				this.logicalCenterX = universe.getXCenter();
 				this.logicalCenterY = universe.getYCenter();
 				this.repaint();
+				
+				//Computer opponent decision block **Currently computer must be O
+				while (currentTurn == 2 && decisionMade == true) {
+					int optimal = minimax.findBestMove(true, board, 2).getValue();
+					decisionMade = true;
+					computerMove(optimal, 2);
+				}
 			}
 
 			universe = animation.getNextUniverse();
@@ -413,6 +424,66 @@ public class AnimationFrame extends JFrame {
 			changeTurn(currentTurn);
 			board[8] = text;
 		} 
+		if (getIsVictorious(currentTurn) == true) {
+			stop = true;
+		}
+		
+	}
+	
+	private void computerMove(int position, int currentTurn) {
+		String text = ""; //Temp display method
+		if (currentTurn == 1) {
+			text = "X";
+		} else if (currentTurn == 2) {
+			text = "O";
+		}
+		if (position == 1 && topLOccupied != true) {
+			this.btnTopL.setText(text);
+			topLOccupied = true;
+			changeTurn(currentTurn);
+			board[0] = text;
+		} else if (position == 2 && topMOccupied != true) {
+			this.btnTopM.setText(text);
+			topMOccupied = true;
+			changeTurn(currentTurn);
+			board[1] = text;
+		} else if (position == 3 && topROccupied != true) {
+			this.btnTopR.setText(text);
+			topROccupied = true;
+			changeTurn(currentTurn);
+			board[2] = text;
+		} else if (position == 4 && midLOccupied != true) {
+			this.btnMidL.setText(text);
+			midLOccupied = true;
+			changeTurn(currentTurn);
+			board[3] = text;
+		} else if (position == 5 && midMOccupied != true) {
+			this.btnMidM.setText(text);
+			midMOccupied = true;
+			changeTurn(currentTurn);
+			board[4] = text;
+		} else if (position == 6 && midROccupied != true) {
+			this.btnMidR.setText(text);
+			midROccupied = true;
+			changeTurn(currentTurn);
+			board[5] = text;
+		} else if (position == 7 && botLOccupied != true) {
+			this.btnBotL.setText(text);
+			botLOccupied = true;
+			changeTurn(currentTurn);
+			board[6] = text;
+		} else if (position == 8 && botMOccupied != true) {
+			this.btnBotM.setText(text);
+			botMOccupied = true;
+			changeTurn(currentTurn);
+			board[7] = text;
+		} else if (position == 9 && botROccupied != true) {
+			this.btnBotR.setText(text);
+			botROccupied = true;
+			changeTurn(currentTurn);
+			board[8] = text;
+		} 
+		decisionMade = false;
 		if (getIsVictorious(currentTurn) == true) {
 			stop = true;
 		}

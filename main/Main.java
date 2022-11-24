@@ -6,7 +6,6 @@ public class Main {
 		ShellAnimation animation = new ShellAnimation();
 		AnimationFrame frame = new AnimationFrame((Animation)animation);
 		frame.start();
-		MiniMax minimax = new MiniMax();
 	}
 
 }
