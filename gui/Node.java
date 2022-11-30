@@ -2,26 +2,26 @@ public class Node
 {
 	protected Node next;
 	protected Node previous;
-	protected int value;
+	protected int position;
 	protected boolean isMaxPlayer;
 
-	public Node(int value, Node previous, Node next, boolean isMaxPlayer)
+	public Node(int position, Node previous, Node next, boolean isMaxPlayer)
 	{
-		this.value = value;
+		this.position = position;
 		this.previous = previous;
 		this.next = next;
 		this.isMaxPlayer = isMaxPlayer;
 	}
 	
-	public Node(int value, Node previous, Node next) {
-		this.value = value;
+	public Node(int position, Node previous, Node next) {
+		this.position = position;
 		this.previous = previous;
 		this.next = next;
 	}
 
-	public int getValue()
+	public int getPosition()
 	{
-		return this.value;
+		return this.position;
 	}
 		
 }

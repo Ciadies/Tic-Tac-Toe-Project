@@ -121,7 +121,7 @@ public class AnimationFrame extends JFrame {
 		panel.setSize(SCREEN_WIDTH, SCREEN_HEIGHT);
 		getContentPane().add(panel, BorderLayout.CENTER);
 
-		btnPauseRun = new JButton("||"); 							//Example code of how a button works
+		btnPauseRun = new JButton("||");	//Example code of how a button works
 		btnPauseRun.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
@@ -133,7 +133,7 @@ public class AnimationFrame extends JFrame {
 		btnTopL.addMouseListener(new MouseAdapter() {  //repeat for each button
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
-				btnBoard_mouseClicked(arg0, 1, currentTurn);
+				btnBoard_mouseClicked(arg0, 1);
 			}
 			
 		});
@@ -142,7 +142,7 @@ public class AnimationFrame extends JFrame {
 		btnTopM.addMouseListener(new MouseAdapter() {  //repeat for each button
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
-				btnBoard_mouseClicked(arg0, 2, currentTurn);
+				btnBoard_mouseClicked(arg0, 2);
 			}
 
 		});
@@ -150,7 +150,7 @@ public class AnimationFrame extends JFrame {
 		btnTopR.addMouseListener(new MouseAdapter() {  //repeat for each button
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
-				btnBoard_mouseClicked(arg0, 3, currentTurn);
+				btnBoard_mouseClicked(arg0, 3);
 			}
 
 		});
@@ -158,7 +158,7 @@ public class AnimationFrame extends JFrame {
 		btnMidL.addMouseListener(new MouseAdapter() {  //repeat for each button
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
-				btnBoard_mouseClicked(arg0, 4, currentTurn);
+				btnBoard_mouseClicked(arg0, 4);
 			}
 
 		});
@@ -166,7 +166,7 @@ public class AnimationFrame extends JFrame {
 		btnMidM.addMouseListener(new MouseAdapter() {  //repeat for each button
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
-				btnBoard_mouseClicked(arg0, 5, currentTurn);
+				btnBoard_mouseClicked(arg0, 5);
 			}
 
 		});
@@ -174,7 +174,7 @@ public class AnimationFrame extends JFrame {
 		btnMidR.addMouseListener(new MouseAdapter() {  //repeat for each button
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
-				btnBoard_mouseClicked(arg0, 6, currentTurn);
+				btnBoard_mouseClicked(arg0, 6);
 			}
 
 		});
@@ -182,7 +182,7 @@ public class AnimationFrame extends JFrame {
 		btnBotL.addMouseListener(new MouseAdapter() {  //repeat for each button
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
-				btnBoard_mouseClicked(arg0, 7, currentTurn);
+				btnBoard_mouseClicked(arg0, 7);
 			}
 
 		});
@@ -190,7 +190,7 @@ public class AnimationFrame extends JFrame {
 		btnBotM.addMouseListener(new MouseAdapter() {  //repeat for each button
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
-				btnBoard_mouseClicked(arg0, 8, currentTurn);
+				btnBoard_mouseClicked(arg0, 8);
 			}
 
 		});
@@ -198,7 +198,7 @@ public class AnimationFrame extends JFrame {
 		btnBotR.addMouseListener(new MouseAdapter() {  //repeat for each button
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
-				btnBoard_mouseClicked(arg0, 9, currentTurn);
+				btnBoard_mouseClicked(arg0, 9);
 			}
 
 		});
@@ -213,7 +213,7 @@ public class AnimationFrame extends JFrame {
 		setButtons(btnBotM, 150, 250, 100, 100);
 		setButtons(btnBotR, 250, 250, 100, 100);
 		
-/*
+/* Button template
 		btnPauseRun.setFont(new Font("Tahoma", Font.BOLD, 12)); //repeat for each button
 		btnPauseRun.setBounds(SCREEN_WIDTH - 64, 20, 48, 32);
 		btnPauseRun.setFocusable(false);
@@ -316,16 +316,18 @@ public class AnimationFrame extends JFrame {
 				this.repaint();
 				
 				//Computer opponent decision block **Currently computer must be O
-				while (currentTurn == 2 && decisionMade == true) {
-					int optimal = minimax.findBestMove(true, board, 2).getValue();
-					decisionMade = true;
-					computerMove(optimal, 2);
+				if (currentTurn == 2) {
+					int optimal = minimax.findBestMove(true, board, 2).getPosition();
+					computerMove(optimal);
+				}
+				//Game end decision block 
+				if (getIsVictorious(1) == true || getIsVictorious(2) == true) {
+					stop = true;
 				}
 			}
 
 			universe = animation.getNextUniverse();
 			keyboard.poll();
-
 		}
 
 		System.out.println("animation complete");
@@ -371,18 +373,18 @@ public class AnimationFrame extends JFrame {
 		}
 	}
 	
-	private void btnBoard_mouseClicked(MouseEvent arg0, int position, int currentTurn) {
-		String text = ""; //Temp display method
+	private void btnBoard_mouseClicked(MouseEvent arg0, int position) {
+		String text = ""; //Player method to update tiles
 		if (currentTurn == 1) {
 			text = "X";
 		} else if (currentTurn == 2) {
 			text = "O";
 		}
 		if (position == 1 && topLOccupied != true) {
-			this.btnTopL.setText(text);
-			topLOccupied = true;
-			changeTurn(currentTurn);
-			board[0] = text;
+			this.btnTopL.setText(text); //assign text
+			topLOccupied = true; //Prevent tile from being used
+			changeTurn(currentTurn); //update the turn 
+			board[0] = text; //Update internal board for game end purposes
 		} else if (position == 2 && topMOccupied != true) {
 			this.btnTopM.setText(text);
 			topMOccupied = true;
@@ -424,24 +426,21 @@ public class AnimationFrame extends JFrame {
 			changeTurn(currentTurn);
 			board[8] = text;
 		} 
-		if (getIsVictorious(currentTurn) == true) {
-			stop = true;
-		}
 		
 	}
 	
-	private void computerMove(int position, int currentTurn) {
-		String text = ""; //Temp display method
+	private void computerMove(int position) {
+		String text = ""; //computer method to make moves without mouse clicks
 		if (currentTurn == 1) {
 			text = "X";
 		} else if (currentTurn == 2) {
 			text = "O";
 		}
 		if (position == 1 && topLOccupied != true) {
-			this.btnTopL.setText(text);
-			topLOccupied = true;
-			changeTurn(currentTurn);
-			board[0] = text;
+			this.btnTopL.setText(text); //update tile
+			topLOccupied = true; //prevent tile from being used
+			changeTurn(currentTurn); //allow opponent to move
+			board[0] = text; //update internal board
 		} else if (position == 2 && topMOccupied != true) {
 			this.btnTopM.setText(text);
 			topMOccupied = true;
@@ -483,10 +482,6 @@ public class AnimationFrame extends JFrame {
 			changeTurn(currentTurn);
 			board[8] = text;
 		} 
-		decisionMade = false;
-		if (getIsVictorious(currentTurn) == true) {
-			stop = true;
-		}
 		
 	}
 	
@@ -500,7 +495,7 @@ public class AnimationFrame extends JFrame {
 		for (int i = 0; i <= 2; i++) {
 			if (board[i] == tile && board[i+3] == tile && board[i+6] == tile) {
 				System.out.println("Victory for " + tile);
-				 return true; //win
+				return true; //win
 			}
 		}
 		for (int i = 0; i <= 7; i+=3) {
@@ -513,14 +508,14 @@ public class AnimationFrame extends JFrame {
 			System.out.println("Victory for " + tile);
 			return true; // win
 		}
-		if (board[2] == tile && board[4] == tile && board[6] == tile) {
+		else if (board[2] == tile && board[4] == tile && board[6] == tile) {
 			System.out.println("Victory for " + tile);
 			return true; //win
 		}
-		if (board[0] != null && board[1] != null && board[2] != null && board[3] != null && board[4] != null && 
+		else if (board[0] != null && board[1] != null && board[2] != null && board[3] != null && board[4] != null && 
 				board[5] != null && board[6] != null && board[7] != null && board[8] != null) {
-			System.out.println("Draw");
-			stop = true; //tie
+			System.out.println("Draw"); 
+			return true; //Draw
 		}
 		return false; //no state
 	}
@@ -684,5 +679,9 @@ public class AnimationFrame extends JFrame {
 		System.out.println("windowClosing()");
 		stop = true;
 		dispose();	
+	}
+	
+	public static int getCurrentTurn() {
+		return currentTurn;
 	}
 }
