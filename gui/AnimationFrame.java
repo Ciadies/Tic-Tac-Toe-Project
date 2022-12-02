@@ -39,6 +39,22 @@ public class AnimationFrame extends JFrame {
 	private JButton btnBotM;
 	private JButton btnBotR;
 	
+	private JButton btnColour1;
+	private JButton btnColour2;
+	private JButton btnColour3;
+	private JButton btnColour4;
+	private JButton btnColour5;
+	private JButton btnColour6;
+	private JButton btnColour7;
+	private JButton btnColour8;
+	private JButton btnColour9;
+	private JButton btnColour10;
+	private JButton btnColour11;
+	private JButton btnColour12;
+	private JButton btnColour13;
+	
+	private Color foregroundColour = Color.WHITE;
+	private Color backgroundColour;
 	MiniMax minimax = new MiniMax();
 	boolean decisionMade = false;
 	
@@ -77,6 +93,7 @@ public class AnimationFrame extends JFrame {
 	private Background background = null;
 	boolean centreOnPlayer = false;
 	int universeLevel = 0;
+	
 	
 	
 	public AnimationFrame(Animation animation)
@@ -126,6 +143,110 @@ public class AnimationFrame extends JFrame {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
 				btnPauseRun_mouseClicked(arg0);
+			}
+		});
+		
+		btnColour1 = new JButton(" ");
+		btnColour1.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				btnColour_mouseClicked(arg0, 1);
+			}
+		});
+		
+		btnColour2 = new JButton(" ");
+		btnColour2.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				btnColour_mouseClicked(arg0, 2);
+			}
+		});
+		
+		btnColour3 = new JButton(" ");
+		btnColour3.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				btnColour_mouseClicked(arg0, 3);
+			}
+		});
+		
+		btnColour4 = new JButton(" ");
+		btnColour4.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				btnColour_mouseClicked(arg0, 4);
+			}
+		});
+		
+		btnColour5 = new JButton(" ");
+		btnColour5.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				btnColour_mouseClicked(arg0, 5);
+			}
+		});
+		
+		btnColour6 = new JButton(" ");
+		btnColour6.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				btnColour_mouseClicked(arg0, 6);
+			}
+		});
+		
+		btnColour7 = new JButton(" ");
+		btnColour7.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				btnColour_mouseClicked(arg0, 7);
+			}
+		});
+		
+		btnColour8 = new JButton(" ");
+		btnColour8.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				btnColour_mouseClicked(arg0, 8);
+			}
+		});
+		
+		btnColour9 = new JButton(" ");
+		btnColour9.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				btnColour_mouseClicked(arg0, 9);
+			}
+		});
+		
+		btnColour10 = new JButton(" ");
+		btnColour10.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				btnColour_mouseClicked(arg0, 10);
+			}
+		});
+		
+		btnColour11 = new JButton(" ");
+		btnColour11.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				btnColour_mouseClicked(arg0, 11);
+			}
+		});
+		
+		btnColour12 = new JButton(" ");
+		btnColour12.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				btnColour_mouseClicked(arg0, 12);
+			}
+		});
+		
+		btnColour13 = new JButton(" ");
+		btnColour13.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				btnColour_mouseClicked(arg0, 13);
 			}
 		});
 		
@@ -203,15 +324,15 @@ public class AnimationFrame extends JFrame {
 
 		});
 		
-		setButtons(btnTopL, 50, 50, 100, 100);
-		setButtons(btnTopM, 150, 50, 100, 100);
-		setButtons(btnTopR, 250, 50, 100, 100);
-		setButtons(btnMidL, 50, 150, 100, 100);
-		setButtons(btnMidM, 150, 150, 100, 100);
-		setButtons(btnMidR, 250, 150, 100, 100);
-		setButtons(btnBotL, 50, 250, 100, 100);
-		setButtons(btnBotM, 150, 250, 100, 100);
-		setButtons(btnBotR, 250, 250, 100, 100);
+		setButtons(btnTopL, 50, 50, 100, 100, foregroundColour, backgroundColour);
+		setButtons(btnTopM, 150, 50, 100, 100, foregroundColour, backgroundColour);
+		setButtons(btnTopR, 250, 50, 100, 100, foregroundColour, backgroundColour);
+		setButtons(btnMidL, 50, 150, 100, 100, foregroundColour, backgroundColour);
+		setButtons(btnMidM, 150, 150, 100, 100, foregroundColour, backgroundColour);
+		setButtons(btnMidR, 250, 150, 100, 100, foregroundColour, backgroundColour);
+		setButtons(btnBotL, 50, 250, 100, 100, foregroundColour, backgroundColour);
+		setButtons(btnBotM, 150, 250, 100, 100, foregroundColour, backgroundColour);
+		setButtons(btnBotR, 250, 250, 100, 100, foregroundColour, backgroundColour);
 		
 /* Button template
 		btnPauseRun.setFont(new Font("Tahoma", Font.BOLD, 12)); //repeat for each button
@@ -238,10 +359,13 @@ public class AnimationFrame extends JFrame {
 	}
 
 
-	private void setButtons(JButton button, int x, int y, int width, int height) {
+	private void setButtons(JButton button, int x, int y, int width, int height, Color foregroundColor, Color backgroundColor) {
 		button.setFont(new Font("Tahoma", Font.BOLD, 48)); //Tahoma, Brush Script MT, Papyrus, 
 		button.setBounds(x, y, width, height);
 		button.setFocusable(false);
+		button.setForeground(foregroundColor); //Text colour
+		button.setBackground(backgroundColor); //Box colour
+		
 		getContentPane().add(button);
 		getContentPane().setComponentZOrder(button, 0);
 	}
@@ -371,6 +495,37 @@ public class AnimationFrame extends JFrame {
 			isPaused = true;
 			this.btnPauseRun.setText(">");
 		}
+	}
+	
+	private void btnColour_mouseClicked(MouseEvent arg0, int colour) {
+		if (colour == 1) {
+			backgroundColour = Color.BLACK;
+		} else if (colour == 2) {
+			backgroundColour = Color.BLUE;
+		} else if (colour == 3) {
+			backgroundColour = Color.CYAN;
+		} else if (colour == 4) {
+			backgroundColour = Color.DARK_GRAY;
+		} else if (colour == 5) {
+			backgroundColour = Color.GRAY;
+		} else if (colour == 6) {
+			backgroundColour = Color.LIGHT_GRAY;
+		} else if (colour == 7) {
+			backgroundColour = Color.GREEN;
+		} else if (colour == 8) {
+			backgroundColour = Color.MAGENTA;
+		} else if (colour == 9) {
+			backgroundColour = Color.ORANGE;
+		} else if (colour == 10) {
+			backgroundColour = Color.PINK;
+		} else if (colour == 11) {
+			backgroundColour = Color.RED;
+		} else if (colour == 12) {
+			backgroundColour = Color.WHITE;
+		} else if (colour == 13) {
+			backgroundColour = Color.YELLOW;
+		}
+		
 	}
 	
 	private void btnBoard_mouseClicked(MouseEvent arg0, int position) {

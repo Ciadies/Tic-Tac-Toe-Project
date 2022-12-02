@@ -31,7 +31,7 @@ public class MiniMax {
 		
 	}
 	
-	public int minimax(String[] board, boolean isMaximizingPlayer, int computerIs) {
+	public int minimax(String[] board, boolean isMaximizingPlayer, int computerIs, int depth) {
 		int score = evaluate(board);
 		String tile = null;
 		if (computerIs == 1) {
@@ -58,7 +58,7 @@ public class MiniMax {
 				if (board[i] == null) {
 					String[] boardClone = (String[]) board.clone();
 					boardClone[i] = tile;
-					best = Math.max(best, minimax(boardClone, !isMaximizingPlayer, computerIs)); //find the move that wins the most
+					best = Math.max(best, minimax(boardClone, !isMaximizingPlayer, computerIs, depth + 1)); //find the move that wins the most
 				}
 			}
 			return best;
@@ -70,7 +70,7 @@ public class MiniMax {
 				if (board[i] == null) {
 					String[] boardClone = (String[]) board.clone();
 					boardClone[i] = "X";
-					best = Math.min(best, minimax(boardClone, !isMaximizingPlayer, computerIs)); //Find the move that loses the least
+					best = Math.min(best, minimax(boardClone, !isMaximizingPlayer, computerIs, depth + 1)); //Find the move that loses the least
 				}
 			}
 			return best;
@@ -102,6 +102,7 @@ public class MiniMax {
 			tile = "O";
 		}	
 		
+		
 		int bestVal = -1000000;
 		Node bestMove = new Node(-1, null, null, false);
 		
@@ -109,7 +110,7 @@ public class MiniMax {
 			String[] boardClone = (String[]) board.clone();
 			if (board[i] == null) {
 				boardClone[i] = tile;
-				int	moveVal = minimax(boardClone, false, computerIs);
+				int	moveVal = minimax(boardClone, false, computerIs, 0);
 				if (moveVal > bestVal) {
 					bestMove.position = i + 1;
 					bestVal = moveVal;
