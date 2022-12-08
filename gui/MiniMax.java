@@ -32,18 +32,18 @@ public class MiniMax {
 	}
 	
 	public int minimax(String[] board, boolean isMaximizingPlayer, int computerIs, int depth) {
-		int score = evaluate(board);
+		int score = evaluate(board, depth);
 		String tile = null;
 		if (computerIs == 1) {
 			tile = "X";
-		} else {
+		} else if (computerIs == 2){
 			tile = "O";
 		}
-		if (score == 10) {
+		if (score > 0) {
 			return score;
 		} //computer auto win
 		
-		if (score == -10) {
+		if (score < 0) {
 			return score;
 		} //human auto win 
 		
@@ -77,7 +77,7 @@ public class MiniMax {
 		}
 	}
 	
-	static int evaluate(String board[]) { //Since this will only be called on computer turn, turn = computer always
+	static int evaluate(String board[], int depth) { //Since this will only be called on computer turn, turn = computer always
 		int turn = AnimationFrame.getCurrentTurn();
 		int oppTurn;
 		if (turn == 1) {
@@ -86,9 +86,9 @@ public class MiniMax {
 			oppTurn = 1;
 		}
 		if (getIsVictorious(turn, board) == true) {
-			return 10;
+			return 10 - depth;
 		} else if (getIsVictorious(oppTurn, board) == true) {
-			return -10;
+			return -10 + depth;
 		}
 		return 0;
 	}
@@ -96,12 +96,10 @@ public class MiniMax {
 	public Node findBestMove(boolean isMaximizingPlayer, String[] board, int computerIs) {
 		String tile = null;
 		if (computerIs == 1) {
-			tile = "X";
-			
+			tile = "X";	
 		} else if (computerIs == 2){
 			tile = "O";
 		}	
-		
 		
 		int bestVal = -1000000;
 		Node bestMove = new Node(-1, null, null, false);
@@ -117,7 +115,8 @@ public class MiniMax {
 				}
 			}
 		}
-//		System.out.println("the best move is: " + bestMove.position); testing code to understand which moves cpu wants to do
+		
+		System.out.println("the best move is: " + bestMove.position);// testing code to understand which moves cpu wants to do
 		return bestMove;
 	}
 	

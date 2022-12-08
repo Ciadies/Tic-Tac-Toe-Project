@@ -53,9 +53,27 @@ public class AnimationFrame extends JFrame {
 	private JButton btnColour12;
 	private JButton btnColour13;
 	
+	private JButton btnFgColour1;
+	private JButton btnFgColour2;
+	private JButton btnFgColour3;
+	private JButton btnFgColour4;
+	private JButton btnFgColour5;
+	private JButton btnFgColour6;
+	private JButton btnFgColour7;
+	private JButton btnFgColour8;
+	private JButton btnFgColour9;
+	private JButton btnFgColour10;
+	private JButton btnFgColour11;
+	private JButton btnFgColour12;
+	private JButton btnFgColour13;
+	
+	private JButton btnBgArt1;
+	private JButton btnBgArt2;
+	private JButton btnBgArt4;
+	
 	private int currentBackground = 1; // 1 is colour select, 5 is boar
 	
-	private Color foregroundColour = Color.BLACK;
+	private Color foregroundColour;
 	private Color backgroundColour;
 	MiniMax minimax = new MiniMax();
 	boolean decisionMade = false;
@@ -137,7 +155,7 @@ public class AnimationFrame extends JFrame {
 
 		panel = new DrawPanel();
 		panel.setLayout(null);
-		panel.setSize(SCREEN_WIDTH, SCREEN_HEIGHT);
+		panel.setSize(SCREEN_WIDTH + 20, SCREEN_HEIGHT + 36);
 		getContentPane().add(panel, BorderLayout.CENTER);
 
 		btnPauseRun = new JButton("||");	//Example code of how a button works
@@ -147,6 +165,7 @@ public class AnimationFrame extends JFrame {
 				btnPauseRun_mouseClicked(arg0);
 			}
 		});
+		
 		
 		btnColour1 = new JButton(" ");
 		btnColour1.addMouseListener(new MouseAdapter() {
@@ -252,6 +271,134 @@ public class AnimationFrame extends JFrame {
 			}
 		});
 		
+		btnFgColour1 = new JButton(" ");
+		btnFgColour1.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				btnTextColour_mouseClicked(arg0, 1);
+			}
+		});
+		
+		btnFgColour2 = new JButton(" ");
+		btnFgColour2.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				btnTextColour_mouseClicked(arg0, 2);
+			}
+		});
+		
+		btnFgColour3 = new JButton(" ");
+		btnFgColour3.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				btnTextColour_mouseClicked(arg0, 3);
+			}
+		});
+		
+		btnFgColour4 = new JButton(" ");
+		btnFgColour4.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				btnTextColour_mouseClicked(arg0, 4);
+			}
+		});
+		
+		btnFgColour5 = new JButton(" ");
+		btnFgColour5.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				btnTextColour_mouseClicked(arg0, 5);
+			}
+		});
+		
+		btnFgColour6 = new JButton(" ");
+		btnFgColour6.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				btnTextColour_mouseClicked(arg0, 6);
+			}
+		});
+		
+		btnFgColour7 = new JButton(" ");
+		btnFgColour7.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				btnTextColour_mouseClicked(arg0, 7);
+			}
+		});
+		
+		btnFgColour8 = new JButton(" ");
+		btnFgColour8.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				btnTextColour_mouseClicked(arg0, 8);
+			}
+		});
+		
+		btnFgColour9 = new JButton(" ");
+		btnFgColour9.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				btnTextColour_mouseClicked(arg0, 9);
+			}
+		});
+		
+		btnFgColour10 = new JButton(" ");
+		btnFgColour10.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				btnTextColour_mouseClicked(arg0, 10);
+			}
+		});
+		
+		btnFgColour11 = new JButton(" ");
+		btnFgColour11.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				btnTextColour_mouseClicked(arg0, 11);
+			}
+		});
+		
+		btnFgColour12 = new JButton(" ");
+		btnFgColour12.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				btnTextColour_mouseClicked(arg0, 12);
+			}
+		});
+		
+		btnFgColour13 = new JButton(" ");
+		btnFgColour13.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				btnTextColour_mouseClicked(arg0, 13);
+			}
+		});
+		
+		btnBgArt1 = new JButton(" ");
+		btnBgArt1.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				btnTextColour_mouseClicked(arg0, 13);
+			}
+		});
+		
+		btnBgArt2 = new JButton(" ");
+		btnBgArt2.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				btnTextColour_mouseClicked(arg0, 13);
+			}
+		});
+		
+		btnBgArt4 = new JButton(" ");
+		btnBgArt4.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				btnTextColour_mouseClicked(arg0, 13);
+			}
+		});
+		
 		btnTopL = new JButton(" ");
 		btnTopL.addMouseListener(new MouseAdapter() {  //repeat for each button
 			@Override
@@ -339,8 +486,23 @@ public class AnimationFrame extends JFrame {
 			setColourButtons(btnColour11, 201, 216, 83, 83, Color.RED);
 			setColourButtons(btnColour12, 284, 216, 83, 83, Color.WHITE);
 			setColourButtons(btnColour13, 160, 299, 83, 83, Color.YELLOW);
-		}
-		if (currentBackground == 5) {
+		} else if (currentBackground == 2) {
+			setColourButtons(btnFgColour1, 35, 50, 83, 83, Color.BLACK);
+			setColourButtons(btnFgColour2, 118, 50, 83, 83, Color.BLUE);
+			setColourButtons(btnFgColour3, 201, 50, 83, 83, Color.CYAN);
+			setColourButtons(btnFgColour4, 284, 50, 83, 83, Color.DARK_GRAY);
+			setColourButtons(btnFgColour5, 35, 133, 83, 83, Color.GRAY);
+			setColourButtons(btnFgColour6, 118, 133, 83, 83, Color.LIGHT_GRAY);
+			setColourButtons(btnFgColour7, 201, 133, 83, 83, Color.GREEN);
+			setColourButtons(btnFgColour8, 284, 133, 83, 83, Color.MAGENTA);
+			setColourButtons(btnFgColour9, 35, 216, 83, 83, Color.ORANGE);
+			setColourButtons(btnFgColour10, 118, 216, 83, 83, Color.PINK);
+			setColourButtons(btnFgColour11, 201, 216, 83, 83, Color.RED);
+			setColourButtons(btnFgColour12, 284, 216, 83, 83, Color.WHITE);
+			setColourButtons(btnFgColour13, 160, 299, 83, 83, Color.YELLOW);
+		} else if (currentBackground == 3) {
+			//set BG buttons
+		}	else if (currentBackground == 5) {
 			setButtons(btnTopL, 50, 50, 100, 100, foregroundColour, backgroundColour);
 			setButtons(btnTopM, 150, 50, 100, 100, foregroundColour, backgroundColour);
 			setButtons(btnTopR, 250, 50, 100, 100, foregroundColour, backgroundColour);
@@ -364,6 +526,14 @@ public class AnimationFrame extends JFrame {
 		lblTop.setBounds(115, 22, SCREEN_WIDTH - 16, 30);
 		getContentPane().add(lblTop);
 		getContentPane().setComponentZOrder(lblTop, 0);
+		
+		lblTop.addMouseListener(new MouseAdapter() {  //repeat for each button
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				easterEgg_mouseClicked(arg0);
+			}
+
+		});
 
 		lblBottom = new JLabel("Status");
 		lblBottom.setForeground(Color.WHITE);
@@ -493,8 +663,13 @@ public class AnimationFrame extends JFrame {
 		} else {
 			tile = "O";
 		}
-		
-		this.lblTop.setText("Current Turn: " + tile);
+		if (currentBackground == 1) {
+			this.lblTop.setText("Choose Board Colour");
+		} else if (currentBackground == 2) {
+			this.lblTop.setText("Choose Mark Colour");
+		} else if (currentBackground == 5) {
+			this.lblTop.setText("Current Turn: " + tile);
+		}		
 	//	this.lblTop.setText(String.format("Time: %9.3f;  centerX: %5d; centerY: %5d;  scale: %3.3f", elapsed_time / 1000.0, screenCenterX, screenCenterY, scale));
 		this.lblBottom.setText(Integer.toString(universeLevel));
 		if (universe != null) {
@@ -551,7 +726,7 @@ public class AnimationFrame extends JFrame {
 		} else if (colour == 13) {
 			backgroundColour = Color.YELLOW;
 		}
-		currentBackground = 5;
+		currentBackground = 2;
 		getContentPane().remove(btnColour1); // use to remove buttons
 		getContentPane().remove(btnColour2);
 		getContentPane().remove(btnColour3);
@@ -565,8 +740,67 @@ public class AnimationFrame extends JFrame {
 		getContentPane().remove(btnColour11);
 		getContentPane().remove(btnColour12);
 		getContentPane().remove(btnColour13);
-		// change to actual game now with the colour
+		// change to Foreground buttons actual game now with the colour
 		
+		setColourButtons(btnFgColour1, 35, 50, 83, 83, Color.BLACK);
+		setColourButtons(btnFgColour2, 118, 50, 83, 83, Color.BLUE);
+		setColourButtons(btnFgColour3, 201, 50, 83, 83, Color.CYAN);
+		setColourButtons(btnFgColour4, 284, 50, 83, 83, Color.DARK_GRAY);
+		setColourButtons(btnFgColour5, 35, 133, 83, 83, Color.GRAY);
+		setColourButtons(btnFgColour6, 118, 133, 83, 83, Color.LIGHT_GRAY);
+		setColourButtons(btnFgColour7, 201, 133, 83, 83, Color.GREEN);
+		setColourButtons(btnFgColour8, 284, 133, 83, 83, Color.MAGENTA);
+		setColourButtons(btnFgColour9, 35, 216, 83, 83, Color.ORANGE);
+		setColourButtons(btnFgColour10, 118, 216, 83, 83, Color.PINK);
+		setColourButtons(btnFgColour11, 201, 216, 83, 83, Color.RED);
+		setColourButtons(btnFgColour12, 284, 216, 83, 83, Color.WHITE);
+		setColourButtons(btnFgColour13, 160, 299, 83, 83, Color.YELLOW);
+	}
+	
+	private void btnTextColour_mouseClicked(MouseEvent arg0, int colour) {
+		if (colour == 1) {
+			foregroundColour = Color.BLACK;
+		} else if (colour == 2) {
+			foregroundColour = Color.BLUE;
+		} else if (colour == 3) {
+			foregroundColour = Color.CYAN;
+		} else if (colour == 4) {
+			foregroundColour = Color.DARK_GRAY;
+		} else if (colour == 5) {
+			foregroundColour = Color.GRAY;
+		} else if (colour == 6) {
+			foregroundColour = Color.LIGHT_GRAY;
+		} else if (colour == 7) {
+			foregroundColour = Color.GREEN;
+		} else if (colour == 8) {
+			foregroundColour = Color.MAGENTA;
+		} else if (colour == 9) {
+			foregroundColour = Color.ORANGE;
+		} else if (colour == 10) {
+			foregroundColour = Color.PINK;
+		} else if (colour == 11) {
+			foregroundColour = Color.RED;
+		} else if (colour == 12) {
+			foregroundColour = Color.WHITE;
+		} else if (colour == 13) {
+			foregroundColour = Color.YELLOW;
+		}
+		currentBackground = 5;
+		getContentPane().remove(btnFgColour1); // use to remove buttons
+		getContentPane().remove(btnFgColour2);
+		getContentPane().remove(btnFgColour3);
+		getContentPane().remove(btnFgColour4);
+		getContentPane().remove(btnFgColour5);
+		getContentPane().remove(btnFgColour6);
+		getContentPane().remove(btnFgColour7);
+		getContentPane().remove(btnFgColour8);
+		getContentPane().remove(btnFgColour9);
+		getContentPane().remove(btnFgColour10);
+		getContentPane().remove(btnFgColour11);
+		getContentPane().remove(btnFgColour12);
+		getContentPane().remove(btnFgColour13);
+		// change to actual game now with the colour
+		currentBackground = 5;
 		setButtons(btnTopL, 50, 50, 100, 100, foregroundColour, backgroundColour);
 		setButtons(btnTopM, 150, 50, 100, 100, foregroundColour, backgroundColour);
 		setButtons(btnTopR, 250, 50, 100, 100, foregroundColour, backgroundColour);
@@ -631,7 +865,6 @@ public class AnimationFrame extends JFrame {
 			changeTurn(currentTurn);
 			board[8] = text;
 		} 
-		
 	}
 	
 	private void computerMove(int position) {
@@ -688,6 +921,10 @@ public class AnimationFrame extends JFrame {
 			board[8] = text;
 		} 
 		
+	}
+	
+	private void easterEgg_mouseClicked(MouseEvent arg0) {
+		System.out.println("You found an easter egg");
 	}
 	
 	private boolean getIsVictorious(int currentTurn) {

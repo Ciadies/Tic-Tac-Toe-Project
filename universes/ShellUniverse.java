@@ -4,16 +4,16 @@ public class ShellUniverse implements Universe {
 
 	private boolean complete = false;	
 	private DisplayableSprite player1 = null;
+	private Background background = null;	
 	private ArrayList<DisplayableSprite> sprites = new ArrayList<DisplayableSprite>();
-	private ArrayList<Background> backgrounds = new ArrayList<Background>();
+	private ArrayList<Background> backgrounds = null;
+	private double xCenter = 0;
+	private double yCenter = 0;
 
 	public ShellUniverse () {
-/*
-		this.setXCenter(0);
-		this.setYCenter(0);
-		player1 = new SimpleSprite(0,0);
-		sprites.add(player1);
-	*/		
+		background = new SHBBackground();
+		backgrounds = new ArrayList<Background>();
+		backgrounds.add(background);
 	}
 
 	public double getScale() {
