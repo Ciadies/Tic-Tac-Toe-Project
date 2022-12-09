@@ -18,10 +18,11 @@ public class ShellAnimation implements Animation {
 		if (universeCount == 1) {
 			return new ShellUniverse();
 		}
-		else {
-			return null;
+		else if (universeCount == 2) {
+			return new ShellUniverse();
+			
 		}
-
+		return null;
 	}
 	
 }

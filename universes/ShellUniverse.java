@@ -4,7 +4,7 @@ public class ShellUniverse implements Universe {
 
 	private boolean complete = false;	
 	private DisplayableSprite player1 = null;
-	private Background background = null;	
+	private static Background background = null;	
 	private ArrayList<DisplayableSprite> sprites = new ArrayList<DisplayableSprite>();
 	private ArrayList<Background> backgrounds = null;
 	private double xCenter = 0;
@@ -73,7 +73,11 @@ public class ShellUniverse implements Universe {
 	}
 
 	public String toString() {
-		return "";
+		return " ";
 	}
-
+	
+	public static void changeBackground(int bg) {
+		SHBBackground.chosenBackground = SHBBackground.getBackground(bg);
+		background = new SHBBackground();	
+	}
 }

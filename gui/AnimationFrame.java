@@ -69,6 +69,7 @@ public class AnimationFrame extends JFrame {
 	
 	private JButton btnBgArt1;
 	private JButton btnBgArt2;
+	private JButton btnBgArt3;
 	private JButton btnBgArt4;
 	
 	private int currentBackground = 1; // 1 is colour select, 5 is boar
@@ -124,7 +125,7 @@ public class AnimationFrame extends JFrame {
 		this.setVisible(true);		
 		this.setFocusable(true);
 		this.setSize(SCREEN_WIDTH + 20, SCREEN_HEIGHT + 36);
-
+		
 		this.addWindowListener(new WindowAdapter() {
 			@Override
 			public void windowClosing(WindowEvent e) {
@@ -379,7 +380,7 @@ public class AnimationFrame extends JFrame {
 		btnBgArt1.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
-				btnTextColour_mouseClicked(arg0, 13);
+				btnArt_mouseClicked(arg0, 1);
 			}
 		});
 		
@@ -387,7 +388,15 @@ public class AnimationFrame extends JFrame {
 		btnBgArt2.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
-				btnTextColour_mouseClicked(arg0, 13);
+				btnArt_mouseClicked(arg0, 2);
+			}
+		});
+		
+		btnBgArt3 = new JButton(" ");
+		btnBgArt3.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				btnArt_mouseClicked(arg0, 3);
 			}
 		});
 		
@@ -395,7 +404,7 @@ public class AnimationFrame extends JFrame {
 		btnBgArt4.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
-				btnTextColour_mouseClicked(arg0, 13);
+				btnArt_mouseClicked(arg0, 4);
 			}
 		});
 		
@@ -473,45 +482,13 @@ public class AnimationFrame extends JFrame {
 
 		});
 		if (currentBackground == 1) {
-			setColourButtons(btnColour1, 35, 50, 83, 83, Color.BLACK);
-			setColourButtons(btnColour2, 118, 50, 83, 83, Color.BLUE);
-			setColourButtons(btnColour3, 201, 50, 83, 83, Color.CYAN);
-			setColourButtons(btnColour4, 284, 50, 83, 83, Color.DARK_GRAY);
-			setColourButtons(btnColour5, 35, 133, 83, 83, Color.GRAY);
-			setColourButtons(btnColour6, 118, 133, 83, 83, Color.LIGHT_GRAY);
-			setColourButtons(btnColour7, 201, 133, 83, 83, Color.GREEN);
-			setColourButtons(btnColour8, 284, 133, 83, 83, Color.MAGENTA);
-			setColourButtons(btnColour9, 35, 216, 83, 83, Color.ORANGE);
-			setColourButtons(btnColour10, 118, 216, 83, 83, Color.PINK);
-			setColourButtons(btnColour11, 201, 216, 83, 83, Color.RED);
-			setColourButtons(btnColour12, 284, 216, 83, 83, Color.WHITE);
-			setColourButtons(btnColour13, 160, 299, 83, 83, Color.YELLOW);
+			setupColourButtons();
 		} else if (currentBackground == 2) {
-			setColourButtons(btnFgColour1, 35, 50, 83, 83, Color.BLACK);
-			setColourButtons(btnFgColour2, 118, 50, 83, 83, Color.BLUE);
-			setColourButtons(btnFgColour3, 201, 50, 83, 83, Color.CYAN);
-			setColourButtons(btnFgColour4, 284, 50, 83, 83, Color.DARK_GRAY);
-			setColourButtons(btnFgColour5, 35, 133, 83, 83, Color.GRAY);
-			setColourButtons(btnFgColour6, 118, 133, 83, 83, Color.LIGHT_GRAY);
-			setColourButtons(btnFgColour7, 201, 133, 83, 83, Color.GREEN);
-			setColourButtons(btnFgColour8, 284, 133, 83, 83, Color.MAGENTA);
-			setColourButtons(btnFgColour9, 35, 216, 83, 83, Color.ORANGE);
-			setColourButtons(btnFgColour10, 118, 216, 83, 83, Color.PINK);
-			setColourButtons(btnFgColour11, 201, 216, 83, 83, Color.RED);
-			setColourButtons(btnFgColour12, 284, 216, 83, 83, Color.WHITE);
-			setColourButtons(btnFgColour13, 160, 299, 83, 83, Color.YELLOW);
+			setupFgColourButtons();
 		} else if (currentBackground == 3) {
 			//set BG buttons
 		}	else if (currentBackground == 5) {
-			setButtons(btnTopL, 50, 50, 100, 100, foregroundColour, backgroundColour);
-			setButtons(btnTopM, 150, 50, 100, 100, foregroundColour, backgroundColour);
-			setButtons(btnTopR, 250, 50, 100, 100, foregroundColour, backgroundColour);
-			setButtons(btnMidL, 50, 150, 100, 100, foregroundColour, backgroundColour);
-			setButtons(btnMidM, 150, 150, 100, 100, foregroundColour, backgroundColour);
-			setButtons(btnMidR, 250, 150, 100, 100, foregroundColour, backgroundColour);
-			setButtons(btnBotL, 50, 250, 100, 100, foregroundColour, backgroundColour);
-			setButtons(btnBotM, 150, 250, 100, 100, foregroundColour, backgroundColour);
-			setButtons(btnBotR, 250, 250, 100, 100, foregroundColour, backgroundColour);
+			setupBoardButtons();
 		}
 /* Button template
 		btnPauseRun.setFont(new Font("Tahoma", Font.BOLD, 12)); //repeat for each button
@@ -562,6 +539,15 @@ public class AnimationFrame extends JFrame {
 		button.setFocusable(false);
 		button.setBackground(backgroundColor);
 
+		getContentPane().add(button);
+		getContentPane().setComponentZOrder(button, 0);
+	}
+	
+	private void setArtButtons(JButton button, int x, int y, int width, int height, String text) {
+		button.setBounds(x, y, width, height);
+		button.setFocusable(false);
+		button.setText(text);
+		//TODO set up the icon
 		getContentPane().add(button);
 		getContentPane().setComponentZOrder(button, 0);
 	}
@@ -698,6 +684,21 @@ public class AnimationFrame extends JFrame {
 		}
 	}
 	
+	private void btnArt_mouseClicked(MouseEvent arg0, int choice) {
+		if (choice == 1) {
+			ShellUniverse.changeBackground(1);
+		} else if (choice == 2) {
+			ShellUniverse.changeBackground(2);
+		} else if (choice == 3) {
+			ShellUniverse.changeBackground(3);
+		} else if (choice == 4) {
+			ShellUniverse.changeBackground(4);
+		}
+		currentBackground = 5;
+		
+		setupBoardButtons();
+	}
+	
 	private void btnColour_mouseClicked(MouseEvent arg0, int colour) {
 		if (colour == 1) {
 			backgroundColour = Color.BLACK;
@@ -727,6 +728,30 @@ public class AnimationFrame extends JFrame {
 			backgroundColour = Color.YELLOW;
 		}
 		currentBackground = 2;
+		
+		// change to Foreground buttons actual game now with the colour
+		setupFgColourButtons();
+		
+	}
+	
+	private void setupColourButtons() {
+		setColourButtons(btnColour1, 35, 50, 83, 83, Color.BLACK);
+		setColourButtons(btnColour2, 118, 50, 83, 83, Color.BLUE);
+		setColourButtons(btnColour3, 201, 50, 83, 83, Color.CYAN);
+		setColourButtons(btnColour4, 284, 50, 83, 83, Color.DARK_GRAY);
+		setColourButtons(btnColour5, 35, 133, 83, 83, Color.GRAY);
+		setColourButtons(btnColour6, 118, 133, 83, 83, Color.LIGHT_GRAY);
+		setColourButtons(btnColour7, 201, 133, 83, 83, Color.GREEN);
+		setColourButtons(btnColour8, 284, 133, 83, 83, Color.MAGENTA);
+		setColourButtons(btnColour9, 35, 216, 83, 83, Color.ORANGE);
+		setColourButtons(btnColour10, 118, 216, 83, 83, Color.PINK);
+		setColourButtons(btnColour11, 201, 216, 83, 83, Color.RED);
+		setColourButtons(btnColour12, 284, 216, 83, 83, Color.WHITE);
+		setColourButtons(btnColour13, 160, 299, 83, 83, Color.YELLOW);
+	}
+	
+	
+	private void setupFgColourButtons() {
 		getContentPane().remove(btnColour1); // use to remove buttons
 		getContentPane().remove(btnColour2);
 		getContentPane().remove(btnColour3);
@@ -740,7 +765,6 @@ public class AnimationFrame extends JFrame {
 		getContentPane().remove(btnColour11);
 		getContentPane().remove(btnColour12);
 		getContentPane().remove(btnColour13);
-		// change to Foreground buttons actual game now with the colour
 		
 		setColourButtons(btnFgColour1, 35, 50, 83, 83, Color.BLACK);
 		setColourButtons(btnFgColour2, 118, 50, 83, 83, Color.BLUE);
@@ -757,6 +781,44 @@ public class AnimationFrame extends JFrame {
 		setColourButtons(btnFgColour13, 160, 299, 83, 83, Color.YELLOW);
 	}
 	
+	private void setupArtButtons() {
+		getContentPane().remove(btnFgColour1); // use to remove buttons
+		getContentPane().remove(btnFgColour2);
+		getContentPane().remove(btnFgColour3);
+		getContentPane().remove(btnFgColour4);
+		getContentPane().remove(btnFgColour5);
+		getContentPane().remove(btnFgColour6);
+		getContentPane().remove(btnFgColour7);
+		getContentPane().remove(btnFgColour8);
+		getContentPane().remove(btnFgColour9);
+		getContentPane().remove(btnFgColour10);
+		getContentPane().remove(btnFgColour11);
+		getContentPane().remove(btnFgColour12);
+		getContentPane().remove(btnFgColour13);
+		
+		setArtButtons(btnBgArt1, 35, 50, 83, 83, "Bricks");
+		setArtButtons(btnBgArt2, 118, 50, 83, 83, "Glitter");
+		setArtButtons(btnBgArt3, 201, 50, 83, 83, "Tiered");
+		setArtButtons(btnBgArt4, 284, 50, 83, 83, "Linked");
+	}
+	private void setupBoardButtons() {
+		//remove art buttons
+		getContentPane().remove(btnBgArt1);
+		getContentPane().remove(btnBgArt2);
+		getContentPane().remove(btnBgArt3);
+		getContentPane().remove(btnBgArt4);
+		
+		setButtons(btnTopL, 50, 50, 100, 100, foregroundColour, backgroundColour);
+		setButtons(btnTopM, 150, 50, 100, 100, foregroundColour, backgroundColour);
+		setButtons(btnTopR, 250, 50, 100, 100, foregroundColour, backgroundColour);
+		setButtons(btnMidL, 50, 150, 100, 100, foregroundColour, backgroundColour);
+		setButtons(btnMidM, 150, 150, 100, 100, foregroundColour, backgroundColour);
+		setButtons(btnMidR, 250, 150, 100, 100, foregroundColour, backgroundColour);
+		setButtons(btnBotL, 50, 250, 100, 100, foregroundColour, backgroundColour);
+		setButtons(btnBotM, 150, 250, 100, 100, foregroundColour, backgroundColour);
+		setButtons(btnBotR, 250, 250, 100, 100, foregroundColour, backgroundColour);
+	}
+ 	
 	private void btnTextColour_mouseClicked(MouseEvent arg0, int colour) {
 		if (colour == 1) {
 			foregroundColour = Color.BLACK;
@@ -785,31 +847,11 @@ public class AnimationFrame extends JFrame {
 		} else if (colour == 13) {
 			foregroundColour = Color.YELLOW;
 		}
-		currentBackground = 5;
-		getContentPane().remove(btnFgColour1); // use to remove buttons
-		getContentPane().remove(btnFgColour2);
-		getContentPane().remove(btnFgColour3);
-		getContentPane().remove(btnFgColour4);
-		getContentPane().remove(btnFgColour5);
-		getContentPane().remove(btnFgColour6);
-		getContentPane().remove(btnFgColour7);
-		getContentPane().remove(btnFgColour8);
-		getContentPane().remove(btnFgColour9);
-		getContentPane().remove(btnFgColour10);
-		getContentPane().remove(btnFgColour11);
-		getContentPane().remove(btnFgColour12);
-		getContentPane().remove(btnFgColour13);
+		setupArtButtons();
+		
 		// change to actual game now with the colour
-		currentBackground = 5;
-		setButtons(btnTopL, 50, 50, 100, 100, foregroundColour, backgroundColour);
-		setButtons(btnTopM, 150, 50, 100, 100, foregroundColour, backgroundColour);
-		setButtons(btnTopR, 250, 50, 100, 100, foregroundColour, backgroundColour);
-		setButtons(btnMidL, 50, 150, 100, 100, foregroundColour, backgroundColour);
-		setButtons(btnMidM, 150, 150, 100, 100, foregroundColour, backgroundColour);
-		setButtons(btnMidR, 250, 150, 100, 100, foregroundColour, backgroundColour);
-		setButtons(btnBotL, 50, 250, 100, 100, foregroundColour, backgroundColour);
-		setButtons(btnBotM, 150, 250, 100, 100, foregroundColour, backgroundColour);
-		setButtons(btnBotR, 250, 250, 100, 100, foregroundColour, backgroundColour);
+		currentBackground = 3;
+		
 	}
 	
 	private void btnBoard_mouseClicked(MouseEvent arg0, int position) {
