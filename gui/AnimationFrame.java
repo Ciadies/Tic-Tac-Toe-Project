@@ -1,3 +1,4 @@
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
@@ -7,6 +8,7 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.io.File;
 import java.awt.event.MouseMotionAdapter;
 
 
@@ -72,9 +74,22 @@ public class AnimationFrame extends JFrame {
 	private JButton btnBgArt3;
 	private JButton btnBgArt4;
 	
-	private int currentBackground = 1; // 1 is colour select, 5 is boar
+	private JButton btnHumanOpp;
+	private JButton btnCPUOpp;
 	
-	private Color foregroundColour;
+	private JButton btnGoFirst;
+	private JButton btnGoSecond;
+	
+	private Icon iconArt1;
+	private Icon iconArt2;
+	private Icon iconArt3;
+	private Icon iconArt4;
+
+	private static int CPUTurn = 2; //default 2
+	private int chosen; 
+	private int currentBackground = 1; // 1 is default
+	
+	private Color foregroundColour = Color.WHITE;
 	private Color backgroundColour;
 	MiniMax minimax = new MiniMax();
 	boolean decisionMade = false;
@@ -159,6 +174,11 @@ public class AnimationFrame extends JFrame {
 		panel.setSize(SCREEN_WIDTH + 20, SCREEN_HEIGHT + 36);
 		getContentPane().add(panel, BorderLayout.CENTER);
 
+		iconArt1 = new ImageIcon("res/tileableBg1.png");
+		iconArt2 = new ImageIcon("res/tileableBg2.png");
+		iconArt3 = new ImageIcon("res/tileableBg3.png");
+		iconArt4 = new ImageIcon("res/tileableBg4.jpg");
+		
 		btnPauseRun = new JButton("||");	//Example code of how a button works
 		btnPauseRun.addMouseListener(new MouseAdapter() {
 			@Override
@@ -376,7 +396,7 @@ public class AnimationFrame extends JFrame {
 			}
 		});
 		
-		btnBgArt1 = new JButton(" ");
+		btnBgArt1 = new JButton(iconArt1);
 		btnBgArt1.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
@@ -384,7 +404,7 @@ public class AnimationFrame extends JFrame {
 			}
 		});
 		
-		btnBgArt2 = new JButton(" ");
+		btnBgArt2 = new JButton(iconArt2);
 		btnBgArt2.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
@@ -392,7 +412,7 @@ public class AnimationFrame extends JFrame {
 			}
 		});
 		
-		btnBgArt3 = new JButton(" ");
+		btnBgArt3 = new JButton(iconArt3);
 		btnBgArt3.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
@@ -400,11 +420,43 @@ public class AnimationFrame extends JFrame {
 			}
 		});
 		
-		btnBgArt4 = new JButton(" ");
+		btnBgArt4 = new JButton(iconArt4);
 		btnBgArt4.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
 				btnArt_mouseClicked(arg0, 4);
+			}
+		});
+		
+		btnHumanOpp = new JButton("VS. Friend");
+		btnHumanOpp.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				btnOpponent_mouseClicked(arg0, 1);
+			}
+		});
+		
+		btnCPUOpp = new JButton("VS. CPU");
+		btnCPUOpp.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				btnOpponent_mouseClicked(arg0, 2);
+			}
+		});
+		
+		btnGoFirst = new JButton("First");
+		btnGoFirst.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				btnTurn_mouseClicked(arg0, 1);
+			}
+		});
+		
+		btnGoSecond = new JButton("Second");
+		btnGoSecond.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				btnTurn_mouseClicked(arg0, 2);
 			}
 		});
 		
@@ -486,8 +538,12 @@ public class AnimationFrame extends JFrame {
 		} else if (currentBackground == 2) {
 			setupFgColourButtons();
 		} else if (currentBackground == 3) {
-			//set BG buttons
-		}	else if (currentBackground == 5) {
+			setupArtButtons();
+		} else if (currentBackground == 4) {
+			setupOppButtons();
+		} else if (currentBackground == 5) {
+			setupTurnButtons();
+		} else if (currentBackground == 6) {
 			setupBoardButtons();
 		}
 /* Button template
@@ -498,7 +554,7 @@ public class AnimationFrame extends JFrame {
 		getContentPane().setComponentZOrder(btnPauseRun, 0);
 */
 		lblTop = new JLabel("Time: ");
-		lblTop.setForeground(Color.WHITE);
+		lblTop.setForeground(Color.BLACK);
 		lblTop.setFont(new Font("Consolas", Font.BOLD, 20));
 		lblTop.setBounds(115, 22, SCREEN_WIDTH - 16, 30);
 		getContentPane().add(lblTop);
@@ -543,11 +599,17 @@ public class AnimationFrame extends JFrame {
 		getContentPane().setComponentZOrder(button, 0);
 	}
 	
-	private void setArtButtons(JButton button, int x, int y, int width, int height, String text) {
+	private void setArtButtons(JButton button, int x, int y, int width, int height) {
 		button.setBounds(x, y, width, height);
 		button.setFocusable(false);
-		button.setText(text);
-		//TODO set up the icon
+		getContentPane().add(button);
+		getContentPane().setComponentZOrder(button, 0);
+	}
+	
+	private void setOppButtons(JButton button, int x, int y, int width, int height) {
+		button.setBounds(x,y, width, height);
+		button.setFocusable(false);
+
 		getContentPane().add(button);
 		getContentPane().setComponentZOrder(button, 0);
 	}
@@ -621,15 +683,16 @@ public class AnimationFrame extends JFrame {
 				this.logicalCenterY = universe.getYCenter();
 				this.repaint();
 				
-				//Computer opponent decision block **Currently computer must be O
-				if (currentTurn == 2) {
-					int optimal = minimax.findBestMove(true, board, 2).getPosition();
-					computerMove(optimal);
-				}
 				//Game end decision block 
 				if (getIsVictorious(1) == true || getIsVictorious(2) == true) {
 					stop = true;
 				}
+				//Computer opponent decision block **Currently computer must be O
+				if (currentTurn == CPUTurn && stop == false) {
+					int optimal = minimax.findBestMove(true, board, CPUTurn);
+					computerMove(optimal);
+				}
+				
 			}
 
 			universe = animation.getNextUniverse();
@@ -653,9 +716,25 @@ public class AnimationFrame extends JFrame {
 			this.lblTop.setText("Choose Board Colour");
 		} else if (currentBackground == 2) {
 			this.lblTop.setText("Choose Mark Colour");
+		} else if (currentBackground == 3) {
+			this.lblTop.setText("Choose Background");
+		} else if (currentBackground == 4) {
+			this.lblTop.setText("Choose Opponent");
 		} else if (currentBackground == 5) {
+			this.lblTop.setText("Choose Turn");
+		} else if (currentBackground == 6) {
 			this.lblTop.setText("Current Turn: " + tile);
 		}		
+		
+		if (chosen == 1) { //set the text to a good colour for bg 1
+			this.lblTop.setForeground(Color.WHITE);
+		} else if (chosen == 2) {
+			this.lblTop.setForeground(Color.DARK_GRAY);
+		} else if (chosen == 3) {
+			this.lblTop.setForeground(Color.RED);
+		} else if (chosen == 4) {
+			this.lblTop.setForeground(Color.WHITE);
+		}
 	//	this.lblTop.setText(String.format("Time: %9.3f;  centerX: %5d; centerY: %5d;  scale: %3.3f", elapsed_time / 1000.0, screenCenterX, screenCenterY, scale));
 		this.lblBottom.setText(Integer.toString(universeLevel));
 		if (universe != null) {
@@ -686,17 +765,21 @@ public class AnimationFrame extends JFrame {
 	
 	private void btnArt_mouseClicked(MouseEvent arg0, int choice) {
 		if (choice == 1) {
+			chosen = 1;
 			ShellUniverse.changeBackground(1);
 		} else if (choice == 2) {
+			chosen = 2;
 			ShellUniverse.changeBackground(2);
 		} else if (choice == 3) {
+			chosen = 3;
 			ShellUniverse.changeBackground(3);
 		} else if (choice == 4) {
+			chosen = 4;
 			ShellUniverse.changeBackground(4);
 		}
-		currentBackground = 5;
+		currentBackground = 4;
 		
-		setupBoardButtons();
+		setupOppButtons();
 	}
 	
 	private void btnColour_mouseClicked(MouseEvent arg0, int colour) {
@@ -731,6 +814,173 @@ public class AnimationFrame extends JFrame {
 		
 		// change to Foreground buttons actual game now with the colour
 		setupFgColourButtons();
+		
+	}
+	
+	private void btnOpponent_mouseClicked(MouseEvent arg0, int opp) {
+		if (opp == 1) {
+			CPUTurn = 3;
+			currentBackground = 6;
+			
+			setupBoardButtons();
+		} else if (opp == 2) {
+			currentBackground = 5;
+			
+			setupTurnButtons();
+		}
+	}
+	
+	private void btnBoard_mouseClicked(MouseEvent arg0, int position) {
+		String text = ""; //Player method to update tiles
+		if (currentTurn == 1) {
+			text = "X";
+		} else if (currentTurn == 2) {
+			text = "O";
+		}
+		if (position == 1 && topLOccupied != true) {
+			this.btnTopL.setText(text); //assign text
+			topLOccupied = true; //Prevent tile from being used
+			board[0] = text; //Update internal board for game end purposes
+		} else if (position == 2 && topMOccupied != true) {
+			this.btnTopM.setText(text);
+			topMOccupied = true;
+			board[1] = text;
+		} else if (position == 3 && topROccupied != true) {
+			this.btnTopR.setText(text);
+			topROccupied = true;
+			board[2] = text;
+		} else if (position == 4 && midLOccupied != true) {
+			this.btnMidL.setText(text);
+			midLOccupied = true;
+			board[3] = text;
+		} else if (position == 5 && midMOccupied != true) {
+			this.btnMidM.setText(text);
+			midMOccupied = true;
+			board[4] = text;
+		} else if (position == 6 && midROccupied != true) {
+			this.btnMidR.setText(text);
+			midROccupied = true;
+			board[5] = text;
+		} else if (position == 7 && botLOccupied != true) {
+			this.btnBotL.setText(text);
+			botLOccupied = true;
+			board[6] = text;
+		} else if (position == 8 && botMOccupied != true) {
+			this.btnBotM.setText(text);
+			botMOccupied = true;
+			board[7] = text;
+		} else if (position == 9 && botROccupied != true) {
+			this.btnBotR.setText(text);
+			botROccupied = true;
+			board[8] = text;
+		} 
+		changeTurn(currentTurn); //update the turn 
+
+	}
+	
+	private void btnTextColour_mouseClicked(MouseEvent arg0, int colour) {
+		if (colour == 1) {
+			foregroundColour = Color.BLACK;
+		} else if (colour == 2) {
+			foregroundColour = Color.BLUE;
+		} else if (colour == 3) {
+			foregroundColour = Color.CYAN;
+		} else if (colour == 4) {
+			foregroundColour = Color.DARK_GRAY;
+		} else if (colour == 5) {
+			foregroundColour = Color.GRAY;
+		} else if (colour == 6) {
+			foregroundColour = Color.LIGHT_GRAY;
+		} else if (colour == 7) {
+			foregroundColour = Color.GREEN;
+		} else if (colour == 8) {
+			foregroundColour = Color.MAGENTA;
+		} else if (colour == 9) {
+			foregroundColour = Color.ORANGE;
+		} else if (colour == 10) {
+			foregroundColour = Color.PINK;
+		} else if (colour == 11) {
+			foregroundColour = Color.RED;
+		} else if (colour == 12) {
+			foregroundColour = Color.WHITE;
+		} else if (colour == 13) {
+			foregroundColour = Color.YELLOW;
+		}
+		setupArtButtons();
+		
+		// change to background
+		currentBackground = 3;
+		
+	}
+	
+	private void btnTurn_mouseClicked(MouseEvent arg0, int turn) {
+		if (turn == 1) {
+			CPUTurn = 2;
+		} else if (turn == 2) {
+			CPUTurn = 1;
+		}
+		currentBackground = 5;
+		
+		setupBoardButtons();
+	}
+	
+	private void easterEgg_mouseClicked(MouseEvent arg0) {
+		System.out.println("You found an easter egg");
+	}
+	
+	private void computerMove(int position) {
+		String text = ""; //computer method to make moves without mouse clicks
+		if (currentTurn == 1) {
+			text = "X";
+		} else if (currentTurn == 2) {
+			text = "O";
+		}
+		if (position == 1 && topLOccupied != true) {
+			this.btnTopL.setText(text); //update tile
+			topLOccupied = true; //prevent tile from being used
+			changeTurn(currentTurn); //allow opponent to move
+			board[0] = text; //update internal board
+		} else if (position == 2 && topMOccupied != true) {
+			this.btnTopM.setText(text);
+			topMOccupied = true;
+			changeTurn(currentTurn);
+			board[1] = text;
+		} else if (position == 3 && topROccupied != true) {
+			this.btnTopR.setText(text);
+			topROccupied = true;
+			changeTurn(currentTurn);
+			board[2] = text;
+		} else if (position == 4 && midLOccupied != true) {
+			this.btnMidL.setText(text);
+			midLOccupied = true;
+			changeTurn(currentTurn);
+			board[3] = text;
+		} else if (position == 5 && midMOccupied != true) {
+			this.btnMidM.setText(text);
+			midMOccupied = true;
+			changeTurn(currentTurn);
+			board[4] = text;
+		} else if (position == 6 && midROccupied != true) {
+			this.btnMidR.setText(text);
+			midROccupied = true;
+			changeTurn(currentTurn);
+			board[5] = text;
+		} else if (position == 7 && botLOccupied != true) {
+			this.btnBotL.setText(text);
+			botLOccupied = true;
+			changeTurn(currentTurn);
+			board[6] = text;
+		} else if (position == 8 && botMOccupied != true) {
+			this.btnBotM.setText(text);
+			botMOccupied = true;
+			changeTurn(currentTurn);
+			board[7] = text;
+		} else if (position == 9 && botROccupied != true) {
+			this.btnBotR.setText(text);
+			botROccupied = true;
+			changeTurn(currentTurn);
+			board[8] = text;
+		} 
 		
 	}
 	
@@ -796,17 +1046,36 @@ public class AnimationFrame extends JFrame {
 		getContentPane().remove(btnFgColour12);
 		getContentPane().remove(btnFgColour13);
 		
-		setArtButtons(btnBgArt1, 35, 50, 83, 83, "Bricks");
-		setArtButtons(btnBgArt2, 118, 50, 83, 83, "Glitter");
-		setArtButtons(btnBgArt3, 201, 50, 83, 83, "Tiered");
-		setArtButtons(btnBgArt4, 284, 50, 83, 83, "Linked");
+		setArtButtons(btnBgArt1, 35, 50, 83, 83);
+		setArtButtons(btnBgArt2, 118, 50, 83, 83);
+		setArtButtons(btnBgArt3, 201, 50, 83, 83);
+		setArtButtons(btnBgArt4, 284, 50, 83, 83);
 	}
-	private void setupBoardButtons() {
-		//remove art buttons
+	
+	private void setupOppButtons() {
 		getContentPane().remove(btnBgArt1);
 		getContentPane().remove(btnBgArt2);
 		getContentPane().remove(btnBgArt3);
 		getContentPane().remove(btnBgArt4);
+		
+		setOppButtons(btnHumanOpp, 50, 50, 100, 100);
+		setOppButtons(btnCPUOpp, 150, 50, 100, 100);
+	}	
+	
+	private void setupTurnButtons() {
+		getContentPane().remove(btnHumanOpp);
+		getContentPane().remove(btnCPUOpp);
+		
+		setOppButtons(btnGoFirst, 50, 50, 100, 100);
+		setOppButtons(btnGoSecond, 150, 50, 100, 100);
+	}
+	
+	private void setupBoardButtons() {
+		//remove art buttons
+		getContentPane().remove(btnHumanOpp);
+		getContentPane().remove(btnCPUOpp);
+		getContentPane().remove(btnGoFirst);
+		getContentPane().remove(btnGoSecond);
 		
 		setButtons(btnTopL, 50, 50, 100, 100, foregroundColour, backgroundColour);
 		setButtons(btnTopM, 150, 50, 100, 100, foregroundColour, backgroundColour);
@@ -819,155 +1088,7 @@ public class AnimationFrame extends JFrame {
 		setButtons(btnBotR, 250, 250, 100, 100, foregroundColour, backgroundColour);
 	}
  	
-	private void btnTextColour_mouseClicked(MouseEvent arg0, int colour) {
-		if (colour == 1) {
-			foregroundColour = Color.BLACK;
-		} else if (colour == 2) {
-			foregroundColour = Color.BLUE;
-		} else if (colour == 3) {
-			foregroundColour = Color.CYAN;
-		} else if (colour == 4) {
-			foregroundColour = Color.DARK_GRAY;
-		} else if (colour == 5) {
-			foregroundColour = Color.GRAY;
-		} else if (colour == 6) {
-			foregroundColour = Color.LIGHT_GRAY;
-		} else if (colour == 7) {
-			foregroundColour = Color.GREEN;
-		} else if (colour == 8) {
-			foregroundColour = Color.MAGENTA;
-		} else if (colour == 9) {
-			foregroundColour = Color.ORANGE;
-		} else if (colour == 10) {
-			foregroundColour = Color.PINK;
-		} else if (colour == 11) {
-			foregroundColour = Color.RED;
-		} else if (colour == 12) {
-			foregroundColour = Color.WHITE;
-		} else if (colour == 13) {
-			foregroundColour = Color.YELLOW;
-		}
-		setupArtButtons();
-		
-		// change to actual game now with the colour
-		currentBackground = 3;
-		
-	}
 	
-	private void btnBoard_mouseClicked(MouseEvent arg0, int position) {
-		String text = ""; //Player method to update tiles
-		if (currentTurn == 1) {
-			text = "X";
-		} else if (currentTurn == 2) {
-			text = "O";
-		}
-		if (position == 1 && topLOccupied != true) {
-			this.btnTopL.setText(text); //assign text
-			topLOccupied = true; //Prevent tile from being used
-			changeTurn(currentTurn); //update the turn 
-			board[0] = text; //Update internal board for game end purposes
-		} else if (position == 2 && topMOccupied != true) {
-			this.btnTopM.setText(text);
-			topMOccupied = true;
-			changeTurn(currentTurn);
-			board[1] = text;
-		} else if (position == 3 && topROccupied != true) {
-			this.btnTopR.setText(text);
-			topROccupied = true;
-			changeTurn(currentTurn);
-			board[2] = text;
-		} else if (position == 4 && midLOccupied != true) {
-			this.btnMidL.setText(text);
-			midLOccupied = true;
-			changeTurn(currentTurn);
-			board[3] = text;
-		} else if (position == 5 && midMOccupied != true) {
-			this.btnMidM.setText(text);
-			midMOccupied = true;
-			changeTurn(currentTurn);
-			board[4] = text;
-		} else if (position == 6 && midROccupied != true) {
-			this.btnMidR.setText(text);
-			midROccupied = true;
-			changeTurn(currentTurn);
-			board[5] = text;
-		} else if (position == 7 && botLOccupied != true) {
-			this.btnBotL.setText(text);
-			botLOccupied = true;
-			changeTurn(currentTurn);
-			board[6] = text;
-		} else if (position == 8 && botMOccupied != true) {
-			this.btnBotM.setText(text);
-			botMOccupied = true;
-			changeTurn(currentTurn);
-			board[7] = text;
-		} else if (position == 9 && botROccupied != true) {
-			this.btnBotR.setText(text);
-			botROccupied = true;
-			changeTurn(currentTurn);
-			board[8] = text;
-		} 
-	}
-	
-	private void computerMove(int position) {
-		String text = ""; //computer method to make moves without mouse clicks
-		if (currentTurn == 1) {
-			text = "X";
-		} else if (currentTurn == 2) {
-			text = "O";
-		}
-		if (position == 1 && topLOccupied != true) {
-			this.btnTopL.setText(text); //update tile
-			topLOccupied = true; //prevent tile from being used
-			changeTurn(currentTurn); //allow opponent to move
-			board[0] = text; //update internal board
-		} else if (position == 2 && topMOccupied != true) {
-			this.btnTopM.setText(text);
-			topMOccupied = true;
-			changeTurn(currentTurn);
-			board[1] = text;
-		} else if (position == 3 && topROccupied != true) {
-			this.btnTopR.setText(text);
-			topROccupied = true;
-			changeTurn(currentTurn);
-			board[2] = text;
-		} else if (position == 4 && midLOccupied != true) {
-			this.btnMidL.setText(text);
-			midLOccupied = true;
-			changeTurn(currentTurn);
-			board[3] = text;
-		} else if (position == 5 && midMOccupied != true) {
-			this.btnMidM.setText(text);
-			midMOccupied = true;
-			changeTurn(currentTurn);
-			board[4] = text;
-		} else if (position == 6 && midROccupied != true) {
-			this.btnMidR.setText(text);
-			midROccupied = true;
-			changeTurn(currentTurn);
-			board[5] = text;
-		} else if (position == 7 && botLOccupied != true) {
-			this.btnBotL.setText(text);
-			botLOccupied = true;
-			changeTurn(currentTurn);
-			board[6] = text;
-		} else if (position == 8 && botMOccupied != true) {
-			this.btnBotM.setText(text);
-			botMOccupied = true;
-			changeTurn(currentTurn);
-			board[7] = text;
-		} else if (position == 9 && botROccupied != true) {
-			this.btnBotR.setText(text);
-			botROccupied = true;
-			changeTurn(currentTurn);
-			board[8] = text;
-		} 
-		
-	}
-	
-	private void easterEgg_mouseClicked(MouseEvent arg0) {
-		System.out.println("You found an easter egg");
-	}
 	
 	private boolean getIsVictorious(int currentTurn) {
 		String tile = null;
@@ -1004,6 +1125,9 @@ public class AnimationFrame extends JFrame {
 		return false; //no state
 	}
 	
+	public static int getCPUTurn() {
+		return CPUTurn;
+	}
 	private void changeTurn(int currentTurn) {
 		if (currentTurn == 1) {
 			this.currentTurn = 2;
@@ -1039,7 +1163,6 @@ public class AnimationFrame extends JFrame {
 		if (keyboard.keyDown(88)) {
 			screenCenterY += 1;
 		}
-		
 	}
 
 	class DrawPanel extends JPanel {

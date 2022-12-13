@@ -34,16 +34,17 @@ public class MiniMax {
 	public int minimax(String[] board, boolean isMaximizingPlayer, int computerIs, int depth) {
 		int score = evaluate(board, depth);
 		String tile = null;
+		String oppTile = null;
 		if (computerIs == 1) {
 			tile = "X";
 		} else if (computerIs == 2){
 			tile = "O";
 		}
-		if (score > 0) {
+		if (score > 10) {
 			return score;
 		} //computer auto win
 		
-		if (score < 0) {
+		if (score < -10) {
 			return score;
 		} //human auto win 
 		
@@ -51,12 +52,18 @@ public class MiniMax {
 			return 0;
 		} //terminating condition for draws
 		
+		if (tile == "X") {
+			oppTile = "O";
+		} else {
+			oppTile = "X";
+		}
+		
 		if (isMaximizingPlayer == true) {
-			int best = -100000000;
+			int best = -1000;
 			
 			for (int i = 0; i < 9; i++) {
-				if (board[i] == null) {
-					String[] boardClone = (String[]) board.clone();
+				String[] boardClone = (String[]) board.clone();
+				if (board[i] == null) {					
 					boardClone[i] = tile;
 					best = Math.max(best, minimax(boardClone, !isMaximizingPlayer, computerIs, depth + 1)); //find the move that wins the most
 				}
@@ -64,12 +71,12 @@ public class MiniMax {
 			return best;
 		}
 		else {
-			int best = 100000;
+			int best = 1000;
 			
 			for (int i = 0; i < 9; i++) {
-				if (board[i] == null) {
-					String[] boardClone = (String[]) board.clone();
-					boardClone[i] = "X";
+				String[] boardClone = (String[]) board.clone();
+				if (board[i] == null) {	
+					boardClone[i] = oppTile;
 					best = Math.min(best, minimax(boardClone, !isMaximizingPlayer, computerIs, depth + 1)); //Find the move that loses the least
 				}
 			}
@@ -78,7 +85,7 @@ public class MiniMax {
 	}
 	
 	static int evaluate(String board[], int depth) { //Since this will only be called on computer turn, turn = computer always
-		int turn = AnimationFrame.getCurrentTurn();
+		int turn = AnimationFrame.getCPUTurn();
 		int oppTurn;
 		if (turn == 1) {
 			oppTurn = 2;
@@ -86,14 +93,14 @@ public class MiniMax {
 			oppTurn = 1;
 		}
 		if (getIsVictorious(turn, board) == true) {
-			return 10 - depth;
+			return 50 - depth;
 		} else if (getIsVictorious(oppTurn, board) == true) {
-			return -10 + depth;
+			return -50 + depth;
 		}
 		return 0;
 	}
 	
-	public Node findBestMove(boolean isMaximizingPlayer, String[] board, int computerIs) {
+	public int findBestMove(boolean isMaximizingPlayer, String[] board, int computerIs) {
 		String tile = null;
 		if (computerIs == 1) {
 			tile = "X";	
@@ -102,21 +109,21 @@ public class MiniMax {
 		}	
 		
 		int bestVal = -1000000;
-		Node bestMove = new Node(-1, null, null, false);
-		
+	//	Node bestMove = new Node(-1, null, null, false);
+		int bestMove = -1;
 		for (int i = 0; i < 9; i++) { //pass through all moves and take the highest value of all end states
 			String[] boardClone = (String[]) board.clone();
 			if (board[i] == null) {
 				boardClone[i] = tile;
-				int	moveVal = minimax(boardClone, false, computerIs, 0);
+				int	moveVal = minimax(boardClone, !isMaximizingPlayer, computerIs, 0);
 				if (moveVal > bestVal) {
-					bestMove.position = i + 1;
+					bestMove = i + 1;
 					bestVal = moveVal;
 				}
 			}
 		}
 		
-		System.out.println("the best move is: " + bestMove.position);// testing code to understand which moves cpu wants to do
+		System.out.println("the best move is: " + bestMove);// testing code to understand which moves cpu wants to do
 		return bestMove;
 	}
 	
