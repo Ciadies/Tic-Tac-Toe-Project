@@ -15,6 +15,10 @@ public class SHBBackground implements Background{
 	public static Image background4;
 	public static Image background5;
 	public static Image background6;
+	
+	public static Image backgroundXWin;
+	public static Image backgroundOWin;
+	public static Image backgroundDraw;
 	public static Image chosenBackground;
 	private int backgroundWidth = 100;
 	private int backgroundHeight = 100;
@@ -25,6 +29,9 @@ public class SHBBackground implements Background{
 			background2 = ImageIO.read(new File("res/tileableBg2.png"));
 			background3 = ImageIO.read(new File("res/tileableBg3.png")); //find a replacement
 			background4 = ImageIO.read(new File("res/tileableBg4.jpg"));
+			backgroundXWin = ImageIO.read(new File("res/confetti.jpg"));
+			backgroundOWin = ImageIO.read(new File("res/confetti.jpg"));
+			backgroundDraw = ImageIO.read(new File("res/confetti.jpg"));
 		}
 		catch (IOException e){
 			
@@ -40,6 +47,12 @@ public class SHBBackground implements Background{
 			return background3;
 		} else if (i == 4) {
 			return background4;
+		} else if (i == 7) {
+			return backgroundXWin;
+		} else if (i == 8) {
+			return backgroundOWin;
+		} else if (i == 9) {
+			return backgroundDraw;
 		}
 		return null;
 	}

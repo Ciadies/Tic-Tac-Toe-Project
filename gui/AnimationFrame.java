@@ -84,11 +84,13 @@ public class AnimationFrame extends JFrame {
 	private Icon iconArt2;
 	private Icon iconArt3;
 	private Icon iconArt4;
+	
+	private JLabel lblEndGame;
 
 	private static int CPUTurn = 2; //default 2
 	private int chosen; 
 	private int currentBackground = 1; // 1 is default
-	
+	boolean pause = true; // Post game options
 	private Color foregroundColour = Color.WHITE;
 	private Color backgroundColour;
 	MiniMax minimax = new MiniMax();
@@ -567,6 +569,13 @@ public class AnimationFrame extends JFrame {
 			}
 
 		});
+		
+		lblEndGame = new JLabel(" ");
+		lblEndGame.setForeground(Color.WHITE);
+		lblEndGame.setFont(new Font("Consolas", Font.BOLD, 40));
+		lblEndGame.setBounds(130, 22, SCREEN_WIDTH - 16, 40);
+		getContentPane().add(lblEndGame);
+		getContentPane().setComponentZOrder(lblEndGame, 0);
 
 		lblBottom = new JLabel("Status");
 		lblBottom.setForeground(Color.WHITE);
@@ -683,12 +692,15 @@ public class AnimationFrame extends JFrame {
 				this.logicalCenterY = universe.getYCenter();
 				this.repaint();
 				
-				//Game end decision block 
-				if (getIsVictorious(1) == true || getIsVictorious(2) == true) {
-					stop = true;
+				//Game end decision block
+				if (pause == false) {
+					if (getIsVictorious(1) == true || getIsVictorious(2) == true) {				
+						pause = true;
+						displayVictory();		
+					}
 				}
 				//Computer opponent decision block **Currently computer must be O
-				if (currentTurn == CPUTurn && stop == false) {
+				if (currentTurn == CPUTurn && stop == false && pause == false) {
 					int optimal = minimax.findBestMove(true, board, CPUTurn);
 					computerMove(optimal);
 				}
@@ -724,7 +736,9 @@ public class AnimationFrame extends JFrame {
 			this.lblTop.setText("Choose Turn");
 		} else if (currentBackground == 6) {
 			this.lblTop.setText("Current Turn: " + tile);
-		}		
+		} else if (currentBackground == 7 || currentBackground == 8 || currentBackground == 9) {
+			this.lblTop.setText(" ");
+		}
 		
 		if (chosen == 1) { //set the text to a good colour for bg 1
 			this.lblTop.setForeground(Color.WHITE);
@@ -823,6 +837,7 @@ public class AnimationFrame extends JFrame {
 			currentBackground = 6;
 			
 			setupBoardButtons();
+			pause = false;
 		} else if (opp == 2) {
 			currentBackground = 5;
 			
@@ -841,40 +856,48 @@ public class AnimationFrame extends JFrame {
 			this.btnTopL.setText(text); //assign text
 			topLOccupied = true; //Prevent tile from being used
 			board[0] = text; //Update internal board for game end purposes
+			changeTurn(currentTurn); //update the turn 
 		} else if (position == 2 && topMOccupied != true) {
 			this.btnTopM.setText(text);
 			topMOccupied = true;
 			board[1] = text;
+			changeTurn(currentTurn); //update the turn 
 		} else if (position == 3 && topROccupied != true) {
 			this.btnTopR.setText(text);
 			topROccupied = true;
 			board[2] = text;
+			changeTurn(currentTurn); //update the turn 
 		} else if (position == 4 && midLOccupied != true) {
 			this.btnMidL.setText(text);
 			midLOccupied = true;
 			board[3] = text;
+			changeTurn(currentTurn); //update the turn 
 		} else if (position == 5 && midMOccupied != true) {
 			this.btnMidM.setText(text);
 			midMOccupied = true;
 			board[4] = text;
+			changeTurn(currentTurn); //update the turn 
 		} else if (position == 6 && midROccupied != true) {
 			this.btnMidR.setText(text);
 			midROccupied = true;
 			board[5] = text;
+			changeTurn(currentTurn); //update the turn 
 		} else if (position == 7 && botLOccupied != true) {
 			this.btnBotL.setText(text);
 			botLOccupied = true;
 			board[6] = text;
+			changeTurn(currentTurn); //update the turn 
 		} else if (position == 8 && botMOccupied != true) {
 			this.btnBotM.setText(text);
 			botMOccupied = true;
 			board[7] = text;
+			changeTurn(currentTurn); //update the turn 
 		} else if (position == 9 && botROccupied != true) {
 			this.btnBotR.setText(text);
 			botROccupied = true;
 			board[8] = text;
+			changeTurn(currentTurn); //update the turn 
 		} 
-		changeTurn(currentTurn); //update the turn 
 
 	}
 	
@@ -919,15 +942,49 @@ public class AnimationFrame extends JFrame {
 		} else if (turn == 2) {
 			CPUTurn = 1;
 		}
-		currentBackground = 5;
+		currentBackground = 6;
 		
 		setupBoardButtons();
+		pause = false;
 	}
 	
 	private void easterEgg_mouseClicked(MouseEvent arg0) {
-		System.out.println("You found an easter egg");
+		if (currentBackground == 6) {
+			System.out.println("You found an easter egg");
+		}
+	}
+	private void displayVictory() {
+		if (getIsVictorious(1) == true && getIsVictorious(2) == true) {
+			currentBackground = 9; //Draw
+			removeBoardButtons();
+			ShellUniverse.changeBackground(9);
+			this.lblEndGame.setBounds(160, 22, SCREEN_WIDTH - 16, 40);
+			this.lblEndGame.setText("Draw");
+		} else if (getIsVictorious(1) == true) {
+			currentBackground = 7; //X win
+			removeBoardButtons();
+			ShellUniverse.changeBackground(7);
+			this.lblEndGame.setText("X WINS!");
+		} else if (getIsVictorious(2) == true) {
+			currentBackground = 8; //O win
+			removeBoardButtons();
+			ShellUniverse.changeBackground(8);
+			this.lblEndGame.setText("O WINS!");
+		} 
+			
 	}
 	
+	private void removeBoardButtons() {
+		getContentPane().remove(btnTopL);
+		getContentPane().remove(btnTopM);
+		getContentPane().remove(btnTopR);
+		getContentPane().remove(btnMidL);
+		getContentPane().remove(btnMidM);
+		getContentPane().remove(btnMidR);
+		getContentPane().remove(btnBotL);
+		getContentPane().remove(btnBotM);
+		getContentPane().remove(btnBotR);
+	}
 	private void computerMove(int position) {
 		String text = ""; //computer method to make moves without mouse clicks
 		if (currentTurn == 1) {
