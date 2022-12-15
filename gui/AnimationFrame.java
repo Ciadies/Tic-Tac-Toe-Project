@@ -85,10 +85,15 @@ public class AnimationFrame extends JFrame {
 	private Icon iconArt3;
 	private Icon iconArt4;
 	
+	private JButton btnReplay;
+	private JButton btnChangeSettings;
+	private JButton btnCloseGame;
+	
 	private JLabel lblEndGame;
 
 	private static int CPUTurn = 2; //default 2
 	private int chosen; 
+	private int ogChosen;
 	private int currentBackground = 1; // 1 is default
 	boolean pause = true; // Post game options
 	private Color foregroundColour = Color.WHITE;
@@ -535,6 +540,34 @@ public class AnimationFrame extends JFrame {
 			}
 
 		});
+		
+		btnReplay = new JButton("Replay?");
+		btnReplay.addMouseListener(new MouseAdapter() {  //repeat for each button
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				btnPostGame_mouseClicked(arg0, 1);
+			}
+
+		});
+		
+		btnChangeSettings = new JButton("Change Settings?");
+		btnChangeSettings.addMouseListener(new MouseAdapter() {  //repeat for each button
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				btnPostGame_mouseClicked(arg0, 2);
+			}
+
+		});
+		
+		btnCloseGame = new JButton("Close Game?");
+		btnCloseGame.addMouseListener(new MouseAdapter() {  //repeat for each button
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				btnPostGame_mouseClicked(arg0, 3);
+			}
+
+		});
+		
 		if (currentBackground == 1) {
 			setupColourButtons();
 		} else if (currentBackground == 2) {
@@ -694,7 +727,13 @@ public class AnimationFrame extends JFrame {
 				
 				//Game end decision block
 				if (pause == false) {
-					if (getIsVictorious(1) == true || getIsVictorious(2) == true) {				
+					boolean draw = true;
+					for (int i = 0; i < 9; i++) {
+						if (board[i] == null) {
+							draw = false;
+						}
+					}
+					if (getIsVictorious(1) == true || getIsVictorious(2) == true || draw == true) {				
 						pause = true;
 						displayVictory();		
 					}
@@ -780,15 +819,19 @@ public class AnimationFrame extends JFrame {
 	private void btnArt_mouseClicked(MouseEvent arg0, int choice) {
 		if (choice == 1) {
 			chosen = 1;
+			ogChosen = 1;
 			ShellUniverse.changeBackground(1);
 		} else if (choice == 2) {
 			chosen = 2;
+			ogChosen = 2;
 			ShellUniverse.changeBackground(2);
 		} else if (choice == 3) {
 			chosen = 3;
+			ogChosen = 3;
 			ShellUniverse.changeBackground(3);
 		} else if (choice == 4) {
 			chosen = 4;
+			ogChosen = 4;
 			ShellUniverse.changeBackground(4);
 		}
 		currentBackground = 4;
@@ -948,43 +991,78 @@ public class AnimationFrame extends JFrame {
 		pause = false;
 	}
 	
+	private void btnPostGame_mouseClicked(MouseEvent arg0, int input) {
+		getContentPane().remove(btnReplay);
+		getContentPane().remove(btnChangeSettings);
+		getContentPane().remove(btnCloseGame);
+		this.lblEndGame.setText("");
+		currentTurn = 1;
+		chosen = 1;
+		if (input == 1) { //replay
+			currentBackground = 5;
+			resetBoard();
+			ShellUniverse.changeBackground(ogChosen);
+			setupBoardButtons();
+			pause = false;
+		} else if (input == 2) { //change settings
+			currentBackground = 1;
+			resetBoard();
+			ShellUniverse.changeBackground(ogChosen);	
+			setupColourButtons();
+		} else if (input == 3) {
+			stop = true;
+		}
+	}
+
 	private void easterEgg_mouseClicked(MouseEvent arg0) {
 		if (currentBackground == 6) {
 			System.out.println("You found an easter egg");
+			this.lblEndGame.setForeground(Color.YELLOW);
 		}
 	}
+	
+	private void resetBoard() {
+		for (int i = 0; i < 9; i++) {
+			board[i] = null;
+		}
+		topLOccupied = false;
+		topMOccupied = false;
+		topROccupied = false;
+		midLOccupied = false;
+		midMOccupied = false;
+		midROccupied = false;
+		botLOccupied = false;
+		botMOccupied = false;
+		botROccupied = false;
+		btnTopL.setText("");
+		btnTopM.setText("");
+		btnTopR.setText("");
+		btnMidL.setText("");
+		btnMidM.setText("");
+		btnMidR.setText("");
+		btnBotL.setText("");
+		btnBotM.setText("");
+		btnBotR.setText("");
+	}
 	private void displayVictory() {
-		if (getIsVictorious(1) == true && getIsVictorious(2) == true) {
+		if (getIsVictorious(1) == false && getIsVictorious(2) == false) {
 			currentBackground = 9; //Draw
-			removeBoardButtons();
 			ShellUniverse.changeBackground(9);
 			this.lblEndGame.setBounds(160, 22, SCREEN_WIDTH - 16, 40);
 			this.lblEndGame.setText("Draw");
+			setupPostGameButtons();
 		} else if (getIsVictorious(1) == true) {
 			currentBackground = 7; //X win
-			removeBoardButtons();
 			ShellUniverse.changeBackground(7);
 			this.lblEndGame.setText("X WINS!");
 		} else if (getIsVictorious(2) == true) {
 			currentBackground = 8; //O win
-			removeBoardButtons();
 			ShellUniverse.changeBackground(8);
 			this.lblEndGame.setText("O WINS!");
 		} 
-			
+		setupPostGameButtons();
 	}
 	
-	private void removeBoardButtons() {
-		getContentPane().remove(btnTopL);
-		getContentPane().remove(btnTopM);
-		getContentPane().remove(btnTopR);
-		getContentPane().remove(btnMidL);
-		getContentPane().remove(btnMidM);
-		getContentPane().remove(btnMidR);
-		getContentPane().remove(btnBotL);
-		getContentPane().remove(btnBotM);
-		getContentPane().remove(btnBotR);
-	}
 	private void computerMove(int position) {
 		String text = ""; //computer method to make moves without mouse clicks
 		if (currentTurn == 1) {
@@ -1145,7 +1223,21 @@ public class AnimationFrame extends JFrame {
 		setButtons(btnBotR, 250, 250, 100, 100, foregroundColour, backgroundColour);
 	}
  	
-	
+	private void setupPostGameButtons() {
+		getContentPane().remove(btnTopL);
+		getContentPane().remove(btnTopM);
+		getContentPane().remove(btnTopR);
+		getContentPane().remove(btnMidL);
+		getContentPane().remove(btnMidM);
+		getContentPane().remove(btnMidR);
+		getContentPane().remove(btnBotL);
+		getContentPane().remove(btnBotM);
+		getContentPane().remove(btnBotR);
+		
+		setOppButtons(btnReplay, 50, 50, 100, 100);
+		setOppButtons(btnChangeSettings, 150, 50, 100, 100);
+		setOppButtons(btnCloseGame, 250, 50, 100, 100);
+	}
 	
 	private boolean getIsVictorious(int currentTurn) {
 		String tile = null;
@@ -1177,7 +1269,7 @@ public class AnimationFrame extends JFrame {
 		else if (board[0] != null && board[1] != null && board[2] != null && board[3] != null && board[4] != null && 
 				board[5] != null && board[6] != null && board[7] != null && board[8] != null) {
 			System.out.println("Draw"); 
-			return true; //Draw
+			return false; //Draw
 		}
 		return false; //no state
 	}
