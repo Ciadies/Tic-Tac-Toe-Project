@@ -74,6 +74,7 @@ public class AnimationFrame extends JFrame {
 	private JButton btnBgArt3;
 	private JButton btnBgArt4;
 	private JButton btnBgArt5;
+	private JButton btnBgArt6;
 	
 	private JButton btnHumanOpp;
 	private JButton btnCPUOpp;
@@ -86,6 +87,7 @@ public class AnimationFrame extends JFrame {
 	private Icon iconArt3;
 	private Icon iconArt4;
 	private Icon iconArt5;
+	private Icon iconArt6;
 	
 	private JButton btnReplay;
 	private JButton btnChangeSettings;
@@ -188,6 +190,7 @@ public class AnimationFrame extends JFrame {
 		iconArt3 = new ImageIcon("res/tileableBg3.jpg");
 		iconArt4 = new ImageIcon("res/tileableBg4.jpg");
 		iconArt5 = new ImageIcon("res/tileableBg5.png");
+		iconArt6 = new ImageIcon("res/tileableBg6.jpg");
 		
 		btnPauseRun = new JButton("||");	//Example code of how a button works
 		btnPauseRun.addMouseListener(new MouseAdapter() {
@@ -443,6 +446,14 @@ public class AnimationFrame extends JFrame {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
 				btnArt_mouseClicked(arg0, 5);
+			}
+		});
+		
+		btnBgArt6 = new JButton(iconArt6);
+		btnBgArt6.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				btnArt_mouseClicked(arg0, 6);
 			}
 		});
 		
@@ -800,6 +811,8 @@ public class AnimationFrame extends JFrame {
 			this.lblTop.setForeground(Color.WHITE);
 		} else if (chosen == 5) {
 			this.lblTop.setForeground(Color.WHITE);
+		} else if (chosen == 6) {
+			this.lblTop.setForeground(Color.BLUE);
 		}
 	//	this.lblTop.setText(String.format("Time: %9.3f;  centerX: %5d; centerY: %5d;  scale: %3.3f", elapsed_time / 1000.0, screenCenterX, screenCenterY, scale));
 		this.lblBottom.setText(Integer.toString(universeLevel));
@@ -850,6 +863,10 @@ public class AnimationFrame extends JFrame {
 			chosen = 5;
 			ogChosen = 5;
 			ShellUniverse.changeBackground(5);
+		} else if (choice == 6) {
+			chosen = 6;
+			ogChosen = 6;
+			ShellUniverse.changeBackground(6);
 		}
 		currentBackground = 4;
 		
@@ -1203,6 +1220,7 @@ public class AnimationFrame extends JFrame {
 		setArtButtons(btnBgArt3, 201, 50, 83, 83);
 		setArtButtons(btnBgArt4, 284, 50, 83, 83);
 		setArtButtons(btnBgArt5, 35, 133, 83, 83);
+		setArtButtons(btnBgArt6, 118, 133, 83, 83);
 	}
 	
 	private void setupOppButtons() {
@@ -1211,6 +1229,7 @@ public class AnimationFrame extends JFrame {
 		getContentPane().remove(btnBgArt3);
 		getContentPane().remove(btnBgArt4);
 		getContentPane().remove(btnBgArt5);
+		getContentPane().remove(btnBgArt6);
 		
 		setOppButtons(btnHumanOpp, 50, 50, 100, 100);
 		setOppButtons(btnCPUOpp, 150, 50, 100, 100);
