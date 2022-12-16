@@ -27,8 +27,9 @@ public class SHBBackground implements Background{
 		try { 
 			background1 = ImageIO.read(new File("res/tileableBg1.png"));
 			background2 = ImageIO.read(new File("res/tileableBg2.png"));
-			background3 = ImageIO.read(new File("res/tileableBg3.png")); //find a replacement
+			background3 = ImageIO.read(new File("res/tileableBg3.jpg")); //find a replacement
 			background4 = ImageIO.read(new File("res/tileableBg4.jpg"));
+			background5 = ImageIO.read(new File("res/tileableBg5.png"));
 			backgroundXWin = ImageIO.read(new File("res/confetti.jpg"));
 			backgroundOWin = ImageIO.read(new File("res/confetti.jpg"));
 			backgroundDraw = ImageIO.read(new File("res/confetti.jpg"));
@@ -47,6 +48,8 @@ public class SHBBackground implements Background{
 			return background3;
 		} else if (i == 4) {
 			return background4;
+		} else if (i == 5) {
+			return background5;
 		} else if (i == 7) {
 			return backgroundXWin;
 		} else if (i == 8) {

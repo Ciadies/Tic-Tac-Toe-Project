@@ -73,6 +73,7 @@ public class AnimationFrame extends JFrame {
 	private JButton btnBgArt2;
 	private JButton btnBgArt3;
 	private JButton btnBgArt4;
+	private JButton btnBgArt5;
 	
 	private JButton btnHumanOpp;
 	private JButton btnCPUOpp;
@@ -84,6 +85,7 @@ public class AnimationFrame extends JFrame {
 	private Icon iconArt2;
 	private Icon iconArt3;
 	private Icon iconArt4;
+	private Icon iconArt5;
 	
 	private JButton btnReplay;
 	private JButton btnChangeSettings;
@@ -183,8 +185,9 @@ public class AnimationFrame extends JFrame {
 
 		iconArt1 = new ImageIcon("res/tileableBg1.png");
 		iconArt2 = new ImageIcon("res/tileableBg2.png");
-		iconArt3 = new ImageIcon("res/tileableBg3.png");
+		iconArt3 = new ImageIcon("res/tileableBg3.jpg");
 		iconArt4 = new ImageIcon("res/tileableBg4.jpg");
+		iconArt5 = new ImageIcon("res/tileableBg5.png");
 		
 		btnPauseRun = new JButton("||");	//Example code of how a button works
 		btnPauseRun.addMouseListener(new MouseAdapter() {
@@ -432,6 +435,14 @@ public class AnimationFrame extends JFrame {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
 				btnArt_mouseClicked(arg0, 4);
+			}
+		});
+		
+		btnBgArt5 = new JButton(iconArt5);
+		btnBgArt5.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				btnArt_mouseClicked(arg0, 5);
 			}
 		});
 		
@@ -784,8 +795,10 @@ public class AnimationFrame extends JFrame {
 		} else if (chosen == 2) {
 			this.lblTop.setForeground(Color.DARK_GRAY);
 		} else if (chosen == 3) {
-			this.lblTop.setForeground(Color.RED);
+			this.lblTop.setForeground(Color.BLACK);
 		} else if (chosen == 4) {
+			this.lblTop.setForeground(Color.WHITE);
+		} else if (chosen == 5) {
 			this.lblTop.setForeground(Color.WHITE);
 		}
 	//	this.lblTop.setText(String.format("Time: %9.3f;  centerX: %5d; centerY: %5d;  scale: %3.3f", elapsed_time / 1000.0, screenCenterX, screenCenterY, scale));
@@ -833,6 +846,10 @@ public class AnimationFrame extends JFrame {
 			chosen = 4;
 			ogChosen = 4;
 			ShellUniverse.changeBackground(4);
+		} else if (choice == 5) {
+			chosen = 5;
+			ogChosen = 5;
+			ShellUniverse.changeBackground(5);
 		}
 		currentBackground = 4;
 		
@@ -1185,6 +1202,7 @@ public class AnimationFrame extends JFrame {
 		setArtButtons(btnBgArt2, 118, 50, 83, 83);
 		setArtButtons(btnBgArt3, 201, 50, 83, 83);
 		setArtButtons(btnBgArt4, 284, 50, 83, 83);
+		setArtButtons(btnBgArt5, 35, 133, 83, 83);
 	}
 	
 	private void setupOppButtons() {
@@ -1192,6 +1210,7 @@ public class AnimationFrame extends JFrame {
 		getContentPane().remove(btnBgArt2);
 		getContentPane().remove(btnBgArt3);
 		getContentPane().remove(btnBgArt4);
+		getContentPane().remove(btnBgArt5);
 		
 		setOppButtons(btnHumanOpp, 50, 50, 100, 100);
 		setOppButtons(btnCPUOpp, 150, 50, 100, 100);
