@@ -75,6 +75,9 @@ public class AnimationFrame extends JFrame {
 	private JButton btnBgArt4;
 	private JButton btnBgArt5;
 	private JButton btnBgArt6;
+	private JButton btnBgArt7;
+	private JButton btnBgArt8;
+	private JButton btnBgArt9;
 	
 	private JButton btnHumanOpp;
 	private JButton btnCPUOpp;
@@ -88,12 +91,16 @@ public class AnimationFrame extends JFrame {
 	private Icon iconArt4;
 	private Icon iconArt5;
 	private Icon iconArt6;
+	private Icon iconArt7;
+	private Icon iconArt8;
+	private Icon iconArt9;
 	
 	private JButton btnReplay;
 	private JButton btnChangeSettings;
 	private JButton btnCloseGame;
 	
 	private JLabel lblEndGame;
+	private int drawCount = 0;
 
 	private static int CPUTurn = 2; //default 2
 	private int chosen; 
@@ -104,6 +111,7 @@ public class AnimationFrame extends JFrame {
 	private Color backgroundColour;
 	MiniMax minimax = new MiniMax();
 	boolean decisionMade = false;
+	boolean easterEggFound = false;
 	
 	public static int currentTurn = 1; //1 = X, 2 = O
 	private boolean topLOccupied = false;
@@ -191,6 +199,9 @@ public class AnimationFrame extends JFrame {
 		iconArt4 = new ImageIcon("res/tileableBg4.jpg");
 		iconArt5 = new ImageIcon("res/tileableBg5.png");
 		iconArt6 = new ImageIcon("res/tileableBg6.jpg");
+		iconArt7 = new ImageIcon("res/tileableBg7.jpg");
+		iconArt8 = new ImageIcon("res/tileableBg8.jpg");
+		iconArt9 = new ImageIcon("res/tileableBg9.jpg");
 		
 		btnPauseRun = new JButton("||");	//Example code of how a button works
 		btnPauseRun.addMouseListener(new MouseAdapter() {
@@ -454,6 +465,30 @@ public class AnimationFrame extends JFrame {
 			@Override
 			public void mouseClicked(MouseEvent arg0) {
 				btnArt_mouseClicked(arg0, 6);
+			}
+		});
+		
+		btnBgArt7 = new JButton(iconArt7);
+		btnBgArt7.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				btnArt_mouseClicked(arg0, 7);
+			}
+		});
+		
+		btnBgArt8 = new JButton(iconArt8);
+		btnBgArt8.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				btnArt_mouseClicked(arg0, 8);
+			}
+		});
+		
+		btnBgArt9 = new JButton(iconArt9);
+		btnBgArt9.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				btnArt_mouseClicked(arg0, 9);
 			}
 		});
 		
@@ -760,10 +795,13 @@ public class AnimationFrame extends JFrame {
 						displayVictory();		
 					}
 				}
-				//Computer opponent decision block **Currently computer must be O
+				//Computer opponent decision block 
 				if (currentTurn == CPUTurn && stop == false && pause == false) {
 					int optimal = minimax.findBestMove(true, board, CPUTurn);
 					computerMove(optimal);
+				}
+				if (drawCount == 5) {
+					easterEggFound = true;
 				}
 				
 			}
@@ -787,16 +825,22 @@ public class AnimationFrame extends JFrame {
 		}
 		if (currentBackground == 1) {
 			this.lblTop.setText("Choose Board Colour");
+			lblTop.setBounds(97, 22, SCREEN_WIDTH - 16, 30);
 		} else if (currentBackground == 2) {
 			this.lblTop.setText("Choose Mark Colour");
+			lblTop.setBounds(102, 22, SCREEN_WIDTH - 16, 30);
 		} else if (currentBackground == 3) {
 			this.lblTop.setText("Choose Background");
+			lblTop.setBounds(98, 22, SCREEN_WIDTH - 16, 30);
 		} else if (currentBackground == 4) {
 			this.lblTop.setText("Choose Opponent");
+			lblTop.setBounds(118, 22, SCREEN_WIDTH - 16, 30);
 		} else if (currentBackground == 5) {
-			this.lblTop.setText("Choose Turn");
+			this.lblTop.setText("Choose Turn"); 
+			lblTop.setBounds(140, 22, SCREEN_WIDTH - 16, 30);
 		} else if (currentBackground == 6) {
 			this.lblTop.setText("Current Turn: " + tile);
+			lblTop.setBounds(115, 22, SCREEN_WIDTH - 16, 30);
 		} else if (currentBackground == 7 || currentBackground == 8 || currentBackground == 9) {
 			this.lblTop.setText(" ");
 		}
@@ -812,7 +856,13 @@ public class AnimationFrame extends JFrame {
 		} else if (chosen == 5) {
 			this.lblTop.setForeground(Color.WHITE);
 		} else if (chosen == 6) {
-			this.lblTop.setForeground(Color.BLUE);
+			this.lblTop.setForeground(Color.WHITE);
+		} else if (chosen == 7) {
+			;
+		} else if (chosen == 8) {
+			
+		} else if (chosen == 9) {
+			
 		}
 	//	this.lblTop.setText(String.format("Time: %9.3f;  centerX: %5d; centerY: %5d;  scale: %3.3f", elapsed_time / 1000.0, screenCenterX, screenCenterY, scale));
 		this.lblBottom.setText(Integer.toString(universeLevel));
@@ -867,6 +917,18 @@ public class AnimationFrame extends JFrame {
 			chosen = 6;
 			ogChosen = 6;
 			ShellUniverse.changeBackground(6);
+		} else if (choice == 7) {
+			chosen = 7;
+			ogChosen = 7;
+			ShellUniverse.changeBackground(10);
+		} else if (choice == 8) {
+			chosen = 8;
+			ogChosen = 8;
+			ShellUniverse.changeBackground(11);
+		} else if (choice == 9) {
+			chosen = 9;
+			ogChosen = 9;
+			ShellUniverse.changeBackground(12);
 		}
 		currentBackground = 4;
 		
@@ -1031,17 +1093,21 @@ public class AnimationFrame extends JFrame {
 		getContentPane().remove(btnCloseGame);
 		this.lblEndGame.setText("");
 		currentTurn = 1;
-		chosen = 1;
+		if (getIsVictorious(1) == false && getIsVictorious(2) == false) {
+			drawCount++;
+		}
 		if (input == 1) { //replay
-			currentBackground = 5;
+			currentBackground = 6;
 			resetBoard();
 			ShellUniverse.changeBackground(ogChosen);
 			setupBoardButtons();
 			pause = false;
+			chosen = ogChosen;
 		} else if (input == 2) { //change settings
 			currentBackground = 1;
 			resetBoard();
-			ShellUniverse.changeBackground(ogChosen);	
+			ShellUniverse.changeBackground(11111);	
+			chosen = 3;
 			setupColourButtons();
 		} else if (input == 3) {
 			stop = true;
@@ -1051,7 +1117,7 @@ public class AnimationFrame extends JFrame {
 	private void easterEgg_mouseClicked(MouseEvent arg0) {
 		if (currentBackground == 6) {
 			System.out.println("You found an easter egg");
-			this.lblEndGame.setForeground(Color.YELLOW);
+			this.lblEndGame.setForeground(Color.ORANGE);
 		}
 	}
 	
@@ -1088,10 +1154,12 @@ public class AnimationFrame extends JFrame {
 		} else if (getIsVictorious(1) == true) {
 			currentBackground = 7; //X win
 			ShellUniverse.changeBackground(7);
+			this.lblEndGame.setBounds(125, 22, SCREEN_WIDTH - 16, 40);
 			this.lblEndGame.setText("X WINS!");
 		} else if (getIsVictorious(2) == true) {
 			currentBackground = 8; //O win
 			ShellUniverse.changeBackground(8);
+			this.lblEndGame.setBounds(130, 22, SCREEN_WIDTH - 16, 40);
 			this.lblEndGame.setText("O WINS!");
 		} 
 		setupPostGameButtons();
@@ -1162,7 +1230,9 @@ public class AnimationFrame extends JFrame {
 		setColourButtons(btnColour6, 118, 133, 83, 83, Color.LIGHT_GRAY);
 		setColourButtons(btnColour7, 201, 133, 83, 83, Color.GREEN);
 		setColourButtons(btnColour8, 284, 133, 83, 83, Color.MAGENTA);
-		setColourButtons(btnColour9, 35, 216, 83, 83, Color.ORANGE);
+		if (easterEggFound == true) {
+			setColourButtons(btnColour9, 35, 216, 83, 83, Color.ORANGE);
+		}
 		setColourButtons(btnColour10, 118, 216, 83, 83, Color.PINK);
 		setColourButtons(btnColour11, 201, 216, 83, 83, Color.RED);
 		setColourButtons(btnColour12, 284, 216, 83, 83, Color.WHITE);
@@ -1193,7 +1263,9 @@ public class AnimationFrame extends JFrame {
 		setColourButtons(btnFgColour6, 118, 133, 83, 83, Color.LIGHT_GRAY);
 		setColourButtons(btnFgColour7, 201, 133, 83, 83, Color.GREEN);
 		setColourButtons(btnFgColour8, 284, 133, 83, 83, Color.MAGENTA);
-		setColourButtons(btnFgColour9, 35, 216, 83, 83, Color.ORANGE);
+		if (easterEggFound == true) {
+			setColourButtons(btnFgColour9, 35, 216, 83, 83, Color.ORANGE);
+		}
 		setColourButtons(btnFgColour10, 118, 216, 83, 83, Color.PINK);
 		setColourButtons(btnFgColour11, 201, 216, 83, 83, Color.RED);
 		setColourButtons(btnFgColour12, 284, 216, 83, 83, Color.WHITE);
@@ -1221,6 +1293,9 @@ public class AnimationFrame extends JFrame {
 		setArtButtons(btnBgArt4, 284, 50, 83, 83);
 		setArtButtons(btnBgArt5, 35, 133, 83, 83);
 		setArtButtons(btnBgArt6, 118, 133, 83, 83);
+		setArtButtons(btnBgArt7, 201, 133, 83, 83);
+		setArtButtons(btnBgArt8, 284, 133, 83, 83);
+		setArtButtons(btnBgArt9, 35, 216, 83, 83);
 	}
 	
 	private void setupOppButtons() {
@@ -1230,17 +1305,20 @@ public class AnimationFrame extends JFrame {
 		getContentPane().remove(btnBgArt4);
 		getContentPane().remove(btnBgArt5);
 		getContentPane().remove(btnBgArt6);
+		getContentPane().remove(btnBgArt7);
+		getContentPane().remove(btnBgArt8);
+		getContentPane().remove(btnBgArt9);
 		
-		setOppButtons(btnHumanOpp, 50, 50, 100, 100);
-		setOppButtons(btnCPUOpp, 150, 50, 100, 100);
+		setOppButtons(btnHumanOpp, 55, 50, 284, 150);
+		setOppButtons(btnCPUOpp, 55, 200, 284, 150);
 	}	
 	
 	private void setupTurnButtons() {
 		getContentPane().remove(btnHumanOpp);
 		getContentPane().remove(btnCPUOpp);
 		
-		setOppButtons(btnGoFirst, 50, 50, 100, 100);
-		setOppButtons(btnGoSecond, 150, 50, 100, 100);
+		setOppButtons(btnGoFirst, 55, 50, 284, 150);
+		setOppButtons(btnGoSecond, 55, 200, 284, 150);
 	}
 	
 	private void setupBoardButtons() {
@@ -1272,9 +1350,9 @@ public class AnimationFrame extends JFrame {
 		getContentPane().remove(btnBotM);
 		getContentPane().remove(btnBotR);
 		
-		setOppButtons(btnReplay, 50, 50, 100, 100);
-		setOppButtons(btnChangeSettings, 150, 50, 100, 100);
-		setOppButtons(btnCloseGame, 250, 50, 100, 100);
+		setOppButtons(btnReplay, 55, 60, 284, 100);
+		setOppButtons(btnChangeSettings, 55, 160, 284, 100);
+		setOppButtons(btnCloseGame, 55, 260, 284, 100);
 	}
 	
 	private boolean getIsVictorious(int currentTurn) {
