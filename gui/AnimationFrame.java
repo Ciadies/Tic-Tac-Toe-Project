@@ -997,6 +997,9 @@ public class AnimationFrame extends JFrame {
 		} else if (currentTurn == 2) {
 			text = "O";
 		}
+		if (pause == true) {
+			return;
+		}
 		if (position == 1 && topLOccupied != true) {
 			this.btnTopL.setText(text); //assign text
 			topLOccupied = true; //Prevent tile from being used
