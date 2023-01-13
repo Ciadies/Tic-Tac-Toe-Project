@@ -1181,6 +1181,11 @@ public class AnimationFrame extends JFrame {
 		} else if (currentTurn == 2) {
 			text = "O";
 		}
+		try {
+			TimeUnit.MILLISECONDS.sleep(500);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
 		if (position == 1 && topLOccupied != true) {
 			this.btnTopL.setText(text); //update tile
 			topLOccupied = true; //prevent tile from being used
