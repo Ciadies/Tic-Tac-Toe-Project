@@ -768,9 +768,10 @@ public class AnimationFrame extends JFrame {
 				}
 
 				//read input
+				
 				keyboard.poll();
 				handleKeyboardInput();
-
+				
 				//UPDATE STATE
 				updateTime();
 				
@@ -997,7 +998,7 @@ public class AnimationFrame extends JFrame {
 		} else if (currentTurn == 2) {
 			text = "O";
 		}
-		if (pause == true) {
+		if (pause == true || currentTurn == CPUTurn) {
 			return;
 		}
 		if (position == 1 && topLOccupied != true) {
